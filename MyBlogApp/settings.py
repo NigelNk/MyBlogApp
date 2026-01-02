@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     # local apps
     'pages',
     'users',
+    'articles',
 
     'django.contrib.admin',
     'django.contrib.auth',
