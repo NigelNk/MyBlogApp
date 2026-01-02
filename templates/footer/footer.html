@@ -1,0 +1,64 @@
+{% load static %}
+<footer class="pt-4 my-md-5 pt-md-5 border-top">
+    <div class="row">
+        <div class="col-12 col-md">
+            <div class="d-flex justify-content-center">
+                <img src="{% static 'images/blog_pic.png' %}" alt="Blog Logo" width="80" height="80">
+            </div>
+            <div class="d-flex justify-content-center">
+                <small class="d-block mb-3 text-body-secondary">Nigel Blog Platform &copy; 2026</small>
+            </div>
+        </div>
+        <div class="col-6 col-md">
+            <h5>Category</h5>
+            <ul class="list-unstyled text-small">
+                <li class="mb-1">
+                    <a class="link-secondary text-decoration-none" href="#">Science</a>
+                </li>
+                <li class="mb-1">
+                    <a class="link-secondary text-decoration-none" href="#">Technology</a>
+                </li>
+                <li class="mb-1">
+                    <a class="link-secondary text-decoration-none" href="#">Health</a>
+                </li>
+                <li class="mb-1">
+                    <a class="link-secondary text-decoration-none" href="#">Politics</a>
+                </li>
+                <li class="mb-1">
+                    <a class="link-secondary text-decoration-none" href="#">Business</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-6 col-md">
+            <h5>Shortcut links</h5>
+            <ul class="list-unstyled text-small">
+                <li class="mb-1">
+                    <a class="link-secondary text-decoration-none" href="{% url 'home' %}">Home</a>
+                </li>
+                <li class="mb-1">
+                    <a class="link-secondary text-decoration-none" href="#">Articles</a>
+                </li>
+                {% if user.is_authenticated %}
+                     <li class="mb-1">
+                        <a class="link-secondary text-decoration-none" href="#">Profile</a>
+                    </li>
+                {% else %}
+                    <li class="mb-1">
+                        <a class="link-secondary text-decoration-none" href="{% url 'login' %}">log in</a>
+                    </li>
+                    <li class="mb-1">
+                        <a class="link-secondary text-decoration-none" href="{% url 'signup' %}">Sign up</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+        <div class="col-6 col-md">
+            <h5>About</h5>
+            <ul class="list-unstyled text-small">
+                <li class="mb-1">
+                    <a class="link-secondary text-decoration-none" href="#">Developer</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</footer>

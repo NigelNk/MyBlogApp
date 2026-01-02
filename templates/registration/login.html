@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block title %}
+    Login
+{% endblock %}
+
+{% block content %}
+    <div class="container py-4">
+        {% include 'header/home_navBar_login.html' %}
+        <div class="container d-flex justify-content-center">
+            <div class="card shadow-sm border-0" style="max-width: 420px; width: 100%;">
+                <div class="card-body p-4">
+
+                    <h3 class="text-center mb-4 fw-semibold">Welcome back,</h3>
+                    {% if form.errors %}
+                        <div class="alert alert-warning text-danger small" role="alert">Please enter a correct username or password. Note that both
+                            fields may be case-sensitive
+                        </div>
+                    {% endif %}
+
+                    <!-- Login Form -->
+                    <form method="post">{% csrf_token %}
+
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text"
+                                   class="form-control"
+                                   id="username"
+                                   name="username"
+                                   placeholder="Enter your username"
+                                   required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password"
+                                   class="form-control"
+                                   id="password"
+                                   name="password"
+                                   placeholder="Enter your password"
+                                   required>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <a href="#" class="text-decoration-none small">Forgot password?</a>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                Log In
+                            </button>
+                        </div>
+                    </form>
+
+                    <hr class="my-4">
+
+                    <p class="text-center mb-0 small">
+                        Don’t have an account?
+                        <a href="{% url 'signup' %}" class="text-decoration-none fw-medium">Sign up</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

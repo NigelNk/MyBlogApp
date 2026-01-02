@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    Home
+{% endblock %}
+
+{% block content %}
+
+    <div class="container py-4">
+        <header>
+            <div class="d-flex flex-wrap align-items-center justify-content-between pb-3 mb-4 border-bottom">
+                <a href="{% url 'home' %}" class="d-flex align-items-center text-decoration-none">
+                    <img src="{% static 'images/blog_pic.png' %}" alt="Blog Logo" width="40" height="40" class="me-2">
+                    <span class="fs-4 fw-semibold text-dark">Blog Platform</span>
+                </a>
+
+                <!-- Navigation -->
+                <nav class="nav align-items-center">
+                    <a class="nav-link px-3 text-dark fw-medium" href="{% url 'home' %}">Home</a>
+
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle px-3 text-dark fw-medium"
+                           href="#"
+                           role="button"
+                           data-bs-toggle="dropdown"
+                           aria-expanded="false">
+                            Category
+                        </a>
+                        <ul class="dropdown-menu shadow-sm">
+                            <li><a class="dropdown-item" href="#">Science</a></li>
+                            <li><a class="dropdown-item" href="#">Technology</a></li>
+                            <li><a class="dropdown-item" href="#">Health</a></li>
+                            <li><a class="dropdown-item" href="#">Politics</a></li>
+                            <li><a class="dropdown-item" href="#">Business</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="ms-3">
+                        <a class="btn btn-primary me-2" href="{% url 'login' %}">Log In</a>
+                        <a class="btn btn-outline-primary" href="{% url 'signup' %}">Sign Up</a>
+                    </div>
+                </nav>
+
+            </div>
+        </header>
+        <div class="container my-4">
+            <div class="row justify-content-center">
+                <div class="col-md-12 col-lg-8">
+                    <!-- Search Form -->
+                    <form class="d-flex shadow-sm rounded-pill overflow-hidden"> {% csrf_token %}
+                        <input class="form-control border-0 px-4 py-2"
+                               type="search"
+                               placeholder="Search articles, authors, topics..."
+                               aria-label="Search">
+                        <!-- Search Button -->
+                        <button class="btn btn-primary px-4" type="submit">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}

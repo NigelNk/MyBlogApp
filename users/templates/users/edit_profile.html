@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Edit Profile{% endblock %}
+
+{% block content %}
+    {% include 'pages/header/header.html' %}
+    <div class="container my-5">
+        <h2>Edit Profile</h2>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {{ message.tags }}">
+                    <div class="alert alert-success" role="alert">
+                        Profile updated successfully!
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+        <form method="post" enctype="multipart/form-data" class="mt-4">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label for="id_first_name" class="form-label">First Name</label>
+                <input type="text" name="first_name" class="form-control" id="id_first_name"
+                       value="{{ form.first_name.value|default_if_none:'' }}">
+                {% if form.first_name.errors %}
+                    <div class="text-danger small">{{ form.first_name.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label for="id_last_name" class="form-label">Last Name</label>
+                <input type="text" name="last_name" class="form-control" id="id_last_name"
+                       value="{{ form.last_name.value|default_if_none:'' }}">
+                {% if form.last_name.errors %}
+                    <div class="text-danger small">{{ form.last_name.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label for="id_image_url" class="form-label">Profile Image</label>
+                <input type="file" name="image_url" class="form-control" id="id_image_url">
+                {% if form.image_url.errors %}
+                    <div class="text-danger small">{{ form.image_url.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label for="id_short_bio" class="form-label">Short Bio</label>
+                <input type="text" name="short_bio" class="form-control" id="id_short_bio"
+                       value="{{ form.short_bio.value|default_if_none:'' }}">
+                {% if form.short_bio.errors %}
+                    <div class="text-danger small">{{ form.short_bio.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label for="id_long_bio" class="form-label">Long Bio</label>
+                <textarea name="long_bio" class="form-control" id="id_long_bio"
+                          rows="4">{{ form.long_bio.value|default_if_none:'' }}</textarea>
+                {% if form.long_bio.errors %}
+                    <div class="text-danger small">{{ form.long_bio.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label for="id_facebook" class="form-label">Facebook</label>
+                <input type="url" name="facebook" class="form-control" id="id_facebook"
+                       value="{{ form.facebook.value|default_if_none:'' }}">
+                {% if form.facebook.errors %}
+                    <div class="text-danger small">{{ form.facebook.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label for="id_twitter" class="form-label">Twitter</label>
+                <input type="url" name="twitter" class="form-control" id="id_twitter"
+                       value="{{ form.twitter.value|default_if_none:'' }}">
+                {% if form.twitter.errors %}
+                    <div class="text-danger small">{{ form.twitter.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label for="id_linkedin" class="form-label">LinkedIn</label>
+                <input type="url" name="linkedin" class="form-control" id="id_linkedin"
+                       value="{{ form.linkedin.value|default_if_none:'' }}">
+                {% if form.linkedin.errors %}
+                    <div class="text-danger small">{{ form.linkedin.errors }}</div>
+                {% endif %}
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+        </form>
+    </div>
+{% endblock %}
