@@ -16,7 +16,7 @@
 
                 <!-- Navigation -->
                 <nav class="nav align-items-center">
-                    <a class="nav-link px-3 text-dark fw-medium" href="{% url 'home' %}">Home</a>
+                    <a class="nav-link px-3 text-primary fw-medium" href="{% url 'home' %}">Home</a>
 
                     <div class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle px-3 text-dark fw-medium"
@@ -34,15 +34,14 @@
                             <li><a class="dropdown-item" href="#">Business</a></li>
                         </ul>
                     </div>
-
                     <div class="ms-3">
                         <a class="btn btn-primary me-2" href="{% url 'login' %}">Log In</a>
                         <a class="btn btn-outline-primary" href="{% url 'signup' %}">Sign Up</a>
                     </div>
                 </nav>
-
             </div>
         </header>
+
         <div class="container my-4">
             <div class="row justify-content-center">
                 <div class="col-md-12 col-lg-8">
@@ -60,6 +59,8 @@
                 </div>
             </div>
         </div>
+        <!-- banner -->
+        {% include 'pages/header/banner.html' %}
 
     </div>
 

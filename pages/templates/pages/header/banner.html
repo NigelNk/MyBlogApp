@@ -1,0 +1,61 @@
+{% load static %}
+
+<div id="blog-banner">
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+
+                    <!-- Card Banner -->
+                    <div class="card shadow-lg border-0 rounded-4">
+                        <div class="card-body p-5">
+                            <div class="row align-items-center g-4">
+
+                                <div class="col-md-7 text-center text-md-start">
+                                    <h1 class="fw-bold mb-3">
+                                        <span class="text-primary">Blogging platform</span>
+                                    </h1>
+                                    <p class="text-muted fs-5">
+                                        Articles, tutorials, and insights from well knowledgeable people across the globe.
+                                    </p>
+
+                                    <div class="mt-4">
+                                        <a href="#" class="btn btn-primary btn-lg me-2">
+                                            Read Posts
+                                        </a>
+                                        <a href="#" class="btn btn-outline-secondary btn-lg">
+                                            About
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <!-- Image -->
+                                <div class="col-md-5 text-center">
+                                    <img src="{% static 'images/blog.png' %}"
+                                         class="img-fluid rounded-3"
+                                         alt="Blog Banner">
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Card -->
+
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const banner = document.getElementById("blog-banner");
+        if (!banner) return;
+        // Hide banner after 1 minute (60 seconds)
+        setTimeout(() => {
+            banner.style.display = "none";
+        }, 60 * 1000);
+    });
+</script>
+
