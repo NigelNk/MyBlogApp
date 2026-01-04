@@ -8,6 +8,7 @@ urlpatterns = [
     path('', include('pages.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/', include('users.urls')),
+    path('articles/', include('articles.urls')),
 ]
 
 admin.site.site_header = 'Admin Portal'
