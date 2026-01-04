@@ -5,43 +5,81 @@
 {% endblock %}
 
 {% block content %}
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom py-3">
+            <div class="container-fluid">
 
-    <div class="container py-4">
-        <header>
-            <div class="d-flex flex-wrap align-items-center justify-content-between pb-3 mb-4 border-bottom">
-                <a href="{% url 'home' %}" class="d-flex align-items-center text-decoration-none">
-                    <img src="{% static 'images/blog_pic.png' %}" alt="Blog Logo" width="40" height="40" class="me-2">
+                <!-- Logo -->
+                <a href="{% url 'home' %}" class="navbar-brand d-flex align-items-center">
+                    <img src="{% static 'images/blog_pic.png' %}"
+                         alt="Blog Logo"
+                         width="40"
+                         height="40"
+                         class="me-2">
                     <span class="fs-4 fw-semibold text-dark">Blog Platform</span>
                 </a>
 
-                <!-- Navigation -->
-                <nav class="nav align-items-center">
-                    <a class="nav-link px-3 text-primary fw-medium" href="{% url 'home' %}">Home</a>
+                <!-- Hamburger Button -->
+                <button class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#mainNavbar"
+                        aria-controls="mainNavbar"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-                    <div class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle px-3 text-dark fw-medium"
-                           href="#"
-                           role="button"
-                           data-bs-toggle="dropdown"
-                           aria-expanded="false">
-                            Category
-                        </a>
-                        <ul class="dropdown-menu shadow-sm">
-                            <li><a class="dropdown-item" href="#">Science</a></li>
-                            <li><a class="dropdown-item" href="#">Technology</a></li>
-                            <li><a class="dropdown-item" href="#">Health</a></li>
-                            <li><a class="dropdown-item" href="#">Politics</a></li>
-                            <li><a class="dropdown-item" href="#">Business</a></li>
-                        </ul>
-                    </div>
-                    <div class="ms-3">
-                        <a class="btn btn-primary me-2" href="{% url 'login' %}">Log In</a>
-                        <a class="btn btn-outline-primary" href="{% url 'signup' %}">Sign Up</a>
-                    </div>
-                </nav>
+                <!-- Collapsible Menu -->
+                <div class="collapse navbar-collapse" id="mainNavbar">
+                    <ul class="navbar-nav ms-auto align-items-lg-center">
+
+                        <li class="nav-item">
+                            <a class="nav-link fw-medium text-primary" href="{% url 'home' %}">
+                                Home
+                            </a>
+                        </li>
+
+                        <!-- Category Dropdown -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle fw-medium"
+                               href="#"
+                               role="button"
+                               data-bs-toggle="dropdown"
+                               aria-expanded="false">
+                                Category
+                            </a>
+                            <ul class="dropdown-menu shadow-sm">
+                                <li><a class="dropdown-item" href="#">All</a></li>
+                                <li><a class="dropdown-item" href="#">Science</a></li>
+                                <li><a class="dropdown-item" href="#">Technology</a></li>
+                                <li><a class="dropdown-item" href="#">Health</a></li>
+                                <li><a class="dropdown-item" href="#">Politics</a></li>
+                                <li><a class="dropdown-item" href="#">Business</a></li>
+                            </ul>
+                        </li>
+
+                        <!-- Auth Buttons -->
+                        <li class="nav-item mt-3 mt-lg-0 ms-lg-3 me-3">
+                            <a class="btn btn-primary w-100 w-lg-auto mb-2 mb-lg-0 me-lg-2"
+                               href="{% url 'login' %}">
+                                Log In
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-outline-primary w-100 w-lg-auto"
+                               href="{% url 'signup' %}">
+                                Sign Up
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
             </div>
-        </header>
+        </nav>
+    </header>
 
+    <div class="container py-2">
         <div class="container my-4">
             <div class="row justify-content-center">
                 <div class="col-md-12 col-lg-8">
@@ -61,6 +99,10 @@
         </div>
         <!-- banner -->
         {% include 'pages/header/banner.html' %}
+
+        <div class="text-dark d-flex justify-content-center justify-content-md-start">
+            <h3>Category Selected:</h3>
+        </div>
 
     </div>
 
