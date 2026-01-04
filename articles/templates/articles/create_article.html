@@ -1,10 +1,76 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}
+    Create article
+{% endblock %}
+
+{% block content %}
+    <style>
+        .article-content {
+            font-size: 1.05rem;
+            line-height: 1.75;
+        }
+
+        .article-content h1,
+        .article-content h2,
+        .article-content h3 {
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .article-content p {
+            margin-bottom: 1.25rem;
+        }
+
+        .article-content a {
+            color: #0d6efd;
+            text-decoration: underline;
+        }
+
+        .article-content ul,
+        .article-content ol {
+            padding-left: 1.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .article-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 0.5rem;
+        }
+
+    </style>
+    {% include 'pages/header/header.html' %}
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+
+                <!-- Title -->
+                <h1 class="fw-bold mb-3">{{ article.title }}</h1>
+
+                <!-- Meta -->
+                <div class="text-muted mb-4">
+                    By <strong>{{ article.author }}</strong> ·
+                    {{ article.created_at|date:"F j, Y" }}
+                </div>
+
+                <!-- Image -->
+                {% if article.image %}
+                    <img
+                            src="{{ article.image.url }}"
+                            class="img-fluid rounded mb-4"
+                            alt="{{ article.title }}"
+                    >
+                {% endif %}
+
+                <!-- Content -->
+                <div class="article-content">
+                    {{ article.content|safe }}
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
