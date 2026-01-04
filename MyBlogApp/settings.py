@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'pages',
     'users',
     'articles',
+    'ckeditor',
+    'ckeditor_uploader',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -137,3 +139,16 @@ STATIC_URL = '/static/'
 AUTH_USER_MODEL = 'users.UserAccount'
 LOGIN_REDIRECT_URL = 'user_dashboard'
 LOGOUT_REDIRECT_URL = 'home'
+
+# settings.py
+CKEDITOR_UPLOAD_PATH = "uploads/"
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+        'height': 300,
+        'width': '100%',
+        'allowedContent': True,  # important
+    }
+}
+
