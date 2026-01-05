@@ -10,7 +10,7 @@
             </div>
         </div>
         <div class="col-6 col-md">
-            <h5>Category</h5>
+            <h5>Categories</h5>
             <ul class="list-unstyled text-small">
                 <li class="mb-1">
                     <a class="link-secondary text-decoration-none" href="#">Science</a>
@@ -32,17 +32,23 @@
         <div class="col-6 col-md">
             <h5>Shortcut links</h5>
             <ul class="list-unstyled text-small">
-                <li class="mb-1">
-                    <a class="link-secondary text-decoration-none" href="{% url 'home' %}">Home</a>
-                </li>
-                <li class="mb-1">
-                    <a class="link-secondary text-decoration-none" href="#">Articles</a>
-                </li>
                 {% if user.is_authenticated %}
-                     <li class="mb-1">
-                        <a class="link-secondary text-decoration-none" href="#">Profile</a>
+                    <li class="mb-1">
+                        <a class="link-secondary text-decoration-none" href="{% url 'user_dashboard' %}">Home</a>
+                    </li>
+                    <li class="mb-1">
+                        <a class="link-secondary text-decoration-none" href="#">Articles</a>
+                    </li>
+                    <li class="mb-1">
+                        <a class="link-secondary text-decoration-none" href="{% url 'create_article' %}">Create articles</a>
+                    </li>
+                    <li class="mb-1">
+                        <a class="link-secondary text-decoration-none" href="{% url 'edit_profile' user.pk %}">Profile</a>
                     </li>
                 {% else %}
+                    <li class="mb-1">
+                        <a class="link-secondary text-decoration-none" href="{% url 'home' %}">Home</a>
+                    </li>
                     <li class="mb-1">
                         <a class="link-secondary text-decoration-none" href="{% url 'login' %}">log in</a>
                     </li>
