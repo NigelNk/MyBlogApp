@@ -14,12 +14,15 @@ ALLOWED_ATTRIBUTES = {
 class ArticleForm(forms.ModelForm):
     class Meta:
         model = Article
-        fields = ['title', 'content', 'image']
+        fields = ['title', 'category', 'content', 'image']
 
         widgets = {
             'title': forms.TextInput(attrs={
                 'class': 'form-control form-control-lg',
                 'placeholder': 'Article title'
+            }),
+            'category': forms.Select(attrs={
+                'class': 'form-select'
             }),
             'image': forms.ClearableFileInput(attrs={
                 'class': 'form-control'
