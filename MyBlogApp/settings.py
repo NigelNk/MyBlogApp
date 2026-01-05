@@ -145,10 +145,18 @@ CKEDITOR_UPLOAD_PATH = "uploads/"
 
 CKEDITOR_CONFIGS = {
     'default': {
-        'toolbar': 'full',
-        'height': 300,
-        'width': '100%',
-        'allowedContent': True,  # important
-    }
+        'toolbar': [
+            ['Bold', 'Italic', 'Underline', 'Strike'],
+            ['NumberedList', 'BulletedList'],
+            ['Link', 'Unlink'],
+            ['RemoveFormat', 'Source'],
+        ],
+        'height': 400,
+        'width': '250%',
+        'resize_enabled': True,
+        'resize_dir': 'vertical',
+        'toolbarCanCollapse': True,
+    },
 }
+
 

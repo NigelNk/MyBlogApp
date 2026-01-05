@@ -1,76 +1,37 @@
 {% extends 'base.html' %}
 
-{% block title %}
-    Create article
-{% endblock %}
+{% block title %}Create Article{% endblock %}
 
 {% block content %}
-    <style>
-        .article-content {
-            font-size: 1.05rem;
-            line-height: 1.75;
-        }
-
-        .article-content h1,
-        .article-content h2,
-        .article-content h3 {
-            margin-top: 2rem;
-            margin-bottom: 1rem;
-            font-weight: 600;
-        }
-
-        .article-content p {
-            margin-bottom: 1.25rem;
-        }
-
-        .article-content a {
-            color: #0d6efd;
-            text-decoration: underline;
-        }
-
-        .article-content ul,
-        .article-content ol {
-            padding-left: 1.5rem;
-            margin-bottom: 1.25rem;
-        }
-
-        .article-content img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 0.5rem;
-        }
-
-    </style>
     {% include 'pages/header/header.html' %}
-    <div class="container my-5">
+
+    <div class="container my-2">
         <div class="row justify-content-center">
-            <div class="col-lg-8">
+            <div class="col-lg-12">
+                    <h1 class="fw-bold mb-4">Create Article</h1>
 
-                <!-- Title -->
-                <h1 class="fw-bold mb-3">{{ article.title }}</h1>
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form.media }}
 
-                <!-- Meta -->
-                <div class="text-muted mb-4">
-                    By <strong>{{ article.author }}</strong> ·
-                    {{ article.created_at|date:"F j, Y" }}
-                </div>
+                        <div class="mb-3">
+                            {{ form.title }}
+                            {{ form.title.errors }}
+                        </div>
 
-                <!-- Image -->
-                {% if article.image %}
-                    <img
-                            src="{{ article.image.url }}"
-                            class="img-fluid rounded mb-4"
-                            alt="{{ article.title }}"
-                    >
-                {% endif %}
+                        <div class="mb-3">
+                            {{ form.content }}
+                            {{ form.content.errors }}
+                        </div>
 
-                <!-- Content -->
-                <div class="article-content">
-                    {{ article.content|safe }}
-                </div>
-
+                        <div class="mb-3">
+                            {{ form.image.label_tag }}
+                            {{ form.image }}
+                            {{ form.image.errors }}
+                        </div>
+                        <button type="submit" class="btn btn-primary">Publish</button>
+                    </form>
             </div>
         </div>
     </div>
-
 {% endblock %}

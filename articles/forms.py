@@ -16,6 +16,16 @@ class ArticleForm(forms.ModelForm):
         model = Article
         fields = ['title', 'content', 'image']
 
+        widgets = {
+            'title': forms.TextInput(attrs={
+                'class': 'form-control form-control-lg',
+                'placeholder': 'Article title'
+            }),
+            'image': forms.ClearableFileInput(attrs={
+                'class': 'form-control'
+            }),
+        }
+
     def clean_content(self):
         content = self.cleaned_data['content']
         return bleach.clean(

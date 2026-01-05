@@ -9,6 +9,8 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/', include('users.urls')),
     path('articles/', include('articles.urls')),
+    # your other URLs
+    path('ckeditor/', include('ckeditor_uploader.urls')),
 ]
 
 admin.site.site_header = 'Admin Portal'
