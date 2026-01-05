@@ -14,13 +14,19 @@
                     {% csrf_token %}
                     {{ form.media }}
 
-                    <div class="mb-3">
+                    <div class="form-floating mb-4">
                         {{ form.title }}
+                        <label for="{{ form.title.id_for_label }}">
+                            Article Title
+                        </label>
                         {{ form.title.errors }}
                     </div>
 
-                    <div class="mb-3">
+                    <div class="form-floating mb-4">
                         {{ form.category }}
+                        <label for="{{ form.category.id_for_label }}">
+                            Category
+                        </label>
                         {{ form.category.errors }}
                     </div>
 
