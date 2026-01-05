@@ -96,22 +96,18 @@
                                href="{% url 'user_dashboard' %}">Home</a>
                         </li>
 
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                                Categories
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.path == '/articles/' %}active{% endif %}"
+                               href="#">
+                                Articles
                             </a>
-                            <ul class="dropdown-menu shadow-sm">
-                                <li><a class="dropdown-item" href="#">all</a></li>
-                                <li><a class="dropdown-item" href="#">Science</a></li>
-                                <li><a class="dropdown-item" href="#">Technology</a></li>
-                                <li><a class="dropdown-item" href="#">Health</a></li>
-                                <li><a class="dropdown-item" href="#">Politics</a></li>
-                                <li><a class="dropdown-item" href="#">Business</a></li>
-                            </ul>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'articles' %}">My Articles</a>
+                            <a class="nav-link {% if request.resolver_match.url_name == 'articles/' %}active{% endif %}"
+                               href="{% url 'articles' %}">
+                                My articles
+                            </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'create_article' %}">Create Article</a>

@@ -1,106 +1,193 @@
 {% extends 'base.html' %}
-
 {% load static %}
 
-{% block title %}
-    Articles
-{% endblock %}
+{% block title %}Articles{% endblock %}
 
 {% block content %}
+
+    {% include 'pages/header/header.html' %}
+
     <style>
         .article-card {
-            border-radius: 10px;
+            border-radius: 14px;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            overflow: hidden;
         }
 
-        .article-card .card-header {
-            border-bottom: 1px solid #eee;
+        .article-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, .08);
+        }
+
+        .article-image {
+            width: 100%;
+            max-height: 380px;
+            object-fit: cover;
+            border-radius: 10px;
         }
 
         .read-more-link {
             font-weight: 500;
-            text-decoration: none;
             color: #0d6efd;
+            text-decoration: none;
         }
 
         .read-more-link:hover {
             text-decoration: underline;
         }
 
-        .read-more-link .arrow {
-            transition: transform 0.2s ease;
-            display: inline-block;
+        .article-excerpt {
+            line-height: 1.6;
+            font-size: 0.95rem;
         }
-
-        .read-more-link:hover .arrow {
-            transform: translateX(4px);
-        }
-
-        .article-image {
-            width: 100%;
-            height: 300px;
-            object-fit: cover;
-        }
-
-
     </style>
-    {% include 'pages/header/header.html' %}
-    <div class="container my-2">
 
-        {% for article in articles %}
-            <div class="row justify-content-center">
-                <div class="col-lg-8 col-md-10 col-sm-12">
-                    <div class="card shadow-sm mb-4 article-card">
+    <div class="container my-4">
+        <div class="row justify-content-center">
 
-                        <!-- Header -->
-                        <div class="card-header bg-white d-flex align-items-center">
-                            <img src="{{ article.author.profile.image_url.url|default:'https://via.placeholder.com/40' }}"
-                                 class="rounded-circle me-3"
-                                 width="50"
-                                 height="50"
-                                 alt="Author">
-                            <div>
-                                <h6 class="mb-0 fw-semibold">
-                                    {{ article.author.profile.get_full_name|default:article.author.username }}
-                                </h6>
-                                <small class="text-muted">
-                                    {{ article.author.profile.short_bio }}
-                                </small>
-                                <br />
-                                <small class="text-muted">
-                                    {{ article.created_at|date:"M d, Y" }} · {{ article.category|title }}
-                                </small>
+            <div class="col-lg-8 col-md-10">
+
+                {% for article in articles %}
+                    {% if article.author == user %}
+                        <div class="card shadow-sm mb-4 article-card">
+
+                            <!-- Header -->
+                            <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center">
+                                    <img src="{{ article.author.profile.image_url.url|default:'https://via.placeholder.com/50' }}"
+                                         class="rounded-circle me-3"
+                                         width="50"
+                                         height="50"
+                                         alt="Author">
+
+                                    <div>
+                                        <h6 class="mb-0 fw-semibold">
+                                            {{ article.author.profile.get_full_name|default:article.author.username }}
+                                        </h6>
+                                        <small class="text-muted">
+                                            {{ article.author.profile.short_bio }}
+                                        </small>
+                                        <br/>
+                                        <small class="text-muted">
+                                            {{ article.created_at|date:"M d, Y" }} · {{ article.category|title }}
+                                        </small>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex align-items-center ms-lg-auto user-dropdown">
+                                    <div class="dropdown">
+                                        <a href="#" class="d-flex align-items-center gap-2 text-decoration-none"
+                                           data-bs-toggle="dropdown">
+                                            <i class="bi bi-three-dots text-muted"></i>
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                                            <li>
+                                                <a class="dropdown-item" href="{% url 'edit_profile' user.pk %}">Edit
+                                                    article</a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" href="{% url 'password_change' %}">Delete
+                                                    article</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
+                            <hr>
+
+                            <!-- Body -->
+                            <div class="card-body">
+
+                                <h5 class="fw-bold mb-2">
+                                    {{ article.title }}
+                                </h5>
+
+                                <p class="article-excerpt text-muted mb-2">
+                                    {{ article.content|striptags|truncatewords:45 }}
+                                </p>
+
+                                {% if article.image %}
+                                    <img src="{{ article.image.url }}"
+                                         class="article-image mb-3"
+                                         alt="{{ article.title }}">
+                                {% endif %}
+
+                            </div>
+
+                            <!-- Footer -->
+                            <div class="card-footer bg-white border-0">
+                                <a href="{% url 'article_detail' article.pk %}" class="read-more-link">
+                                    Read more →
+                                </a>
+                            </div>
+
                         </div>
+                    {% else %}
+                        <div class="card shadow-sm mb-4 article-card">
 
-                        <!-- Body -->
-                        <div class="card-body">
-                            <h5 class="card-title fw-bold">
-                                {{ article.title }}
-                            </h5>
+                            <!-- Header -->
+                            <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center">
+                                    <img src="{{ article.author.profile.image_url.url|default:'https://via.placeholder.com/50' }}"
+                                         class="rounded-circle me-3"
+                                         width="50"
+                                         height="50"
+                                         alt="Author">
 
-                            <p class="card-text text-muted">
-                                {{ article.content|striptags|truncatewords:50 }}
-                            </p>
+                                    <div>
+                                        <h6 class="mb-0 fw-semibold">
+                                            {{ article.author.profile.get_full_name|default:article.author.username }}
+                                        </h6>
+                                        <small class="text-muted">
+                                            {{ article.author.profile.short_bio }}
+                                        </small>
+                                        <br/>
+                                        <small class="text-muted">
+                                            {{ article.created_at|date:"M d, Y" }} · {{ article.category|title }}
+                                        </small>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <hr>
 
-                            {% if article.image %}
-                                <img src="{{ article.image.url }}"
-                                     class="img-fluid article-image mt-2"
-                                     alt="{{ article.title }}">
-                            {% endif %}
+                            <!-- Body -->
+                            <div class="card-body">
+
+                                <h5 class="fw-bold mb-2">
+                                    {{ article.title }}
+                                </h5>
+
+                                <p class="article-excerpt text-muted mb-2">
+                                    {{ article.content|striptags|truncatewords:45 }}
+                                </p>
+
+                                {% if article.image %}
+                                    <img src="{{ article.image.url }}"
+                                         class="article-image mb-3"
+                                         alt="{{ article.title }}">
+                                {% endif %}
+
+                            </div>
+
+                            <!-- Footer -->
+                            <div class="card-footer bg-white border-0">
+                                <a href="{% url 'article_detail' article.pk %}" class="read-more-link">
+                                    Read more →
+                                </a>
+                            </div>
+
                         </div>
+                    {% endif %}
+                {% empty %}
+                    <p class="text-center text-muted mt-5">
+                        No articles available.
+                    </p>
+                {% endfor %}
 
-                        <!-- Footer -->
-                        <div class="card-footer bg-white border-0">
-                            <a href="#" class="read-more-link">
-                                Read more <span class="arrow">→</span>
-                            </a>
-                        </div>
-
-                    </div>
-                </div>
             </div>
-        {% endfor %}
 
+        </div>
     </div>
 
 {% endblock %}

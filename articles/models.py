@@ -17,4 +17,7 @@ class Article(models.Model):
     category = models.CharField(max_length=20, choices=CATEGORIES, default='science')
     created_at = models.DateTimeField(auto_now_add=True)
     content = RichTextField(config_name='default')
-    image = models.ImageField(upload_to='articles')
+    image = models.ImageField(upload_to='article_images/', blank=True, null=True)
+
+    def __str__(self):
+        return self.title

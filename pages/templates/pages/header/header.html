@@ -1,6 +1,6 @@
 {% load static %}
+
 <style>
-    /* Navbar Brand */
     .navbar-brand {
         font-weight: 600;
         font-size: 1.25rem;
@@ -11,7 +11,17 @@
         margin-right: 8px;
     }
 
-    /* Center nav links on desktop */
+    .nav-link {
+        padding: 0.6rem 1rem;
+        transition: color 0.2s;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+        font-weight: 600;
+        color: #0d6efd !important;
+    }
+
     @media (min-width: 992px) {
         .navbar-center {
             position: absolute;
@@ -20,20 +30,7 @@
         }
     }
 
-    .nav-link {
-        transition: color 0.2s;
-    }
 
-    .nav-link:hover, .nav-link.active {
-        font-weight: 600;
-        color: #0d6efd !important;
-    }
-
-    .dropdown-menu a.dropdown-item:hover {
-        background-color: #f8f9fa;
-    }
-
-    /* User avatar */
     .avatar {
         width: 36px;
         height: 36px;
@@ -42,83 +39,90 @@
         border: 2px solid #0d6efd;
     }
 
-    .user-dropdown span {
-        font-weight: 500;
-    }
-
     .navbar-toggler {
         border: none;
+    }
+
+    @media (max-width: 991px) {
+        .navbar-nav {
+            padding-top: 1rem;
+        }
+
+        .dropdown-menu {
+            border: none;
+            box-shadow: none;
+        }
     }
 </style>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-3 px-lg-4">
     <div class="container-fluid">
 
-        <!-- Brand -->
         <a class="navbar-brand d-flex align-items-center" href="{% url 'user_dashboard' %}">
-            <img src="{% static 'images/blog_pic.png' %}" alt="Logo" width="40" height="40">
+            <img src="{% static 'images/blog_pic.png' %}" width="40" height="40" alt="Logo">
             Blog Platform
         </a>
 
         <!-- Hamburger -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
-                aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#mainNavbar"
+                aria-controls="mainNavbar"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <!-- Nav links -->
+        <!-- Collapsible Content -->
         <div class="collapse navbar-collapse" id="mainNavbar">
 
-            <ul class="navbar-nav navbar-center gap-lg-3 mx-auto text-center text-lg-start">
+            <!-- Main Nav -->
+            <ul class="navbar-nav navbar-center mx-auto text-center text-lg-start">
+
                 <li class="nav-item">
                     <a class="nav-link {% if request.path == '/dashboard/' %}active{% endif %}"
-                       href="{% url 'user_dashboard' %}">Home</a>
+                       href="{% url 'user_dashboard' %}">
+                        Home
+                    </a>
                 </li>
 
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                        Categories
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/articles/' %}active{% endif %}"
+                       href="#">
+                        Articles
                     </a>
-                    <ul class="dropdown-menu shadow-sm">
-                        <li><a class="dropdown-item" href="#">Science</a></li>
-                        <li><a class="dropdown-item" href="#">Technology</a></li>
-                        <li><a class="dropdown-item" href="#">Health</a></li>
-                        <li><a class="dropdown-item" href="#">Politics</a></li>
-                        <li><a class="dropdown-item" href="#">Business</a></li>
-                    </ul>
                 </li>
 
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'articles' %}">My Articles</a>
                 </li>
+
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'create_article' %}">Create Article</a>
                 </li>
+
             </ul>
 
-            <!-- User dropdown -->
-            <div class="d-flex align-items-center ms-lg-auto user-dropdown">
-                <div class="dropdown">
-                    <a href="#" class="d-flex align-items-center gap-2 text-decoration-none" data-bs-toggle="dropdown">
+            <!-- User Menu -->
+            <ul class="navbar-nav ms-lg-auto text-center text-lg-start mt-3 mt-lg-0">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center justify-content-center gap-2"
+                       href="#"
+                       data-bs-toggle="dropdown">
+
                         {% if user.profile.image_url %}
-                            <img src="{{ user.profile.image_url.url }}" alt="Profile picture" class="rounded-circle"
-                                 height="40" width="40">
+                            <img src="{{ user.profile.image_url.url }}" class="avatar" alt="Avatar">
                         {% else %}
-                            <img src="{% static 'images/default-avatar.png' %}" alt="Default avatar">
+                            <img src="{% static 'images/default-avatar.png' %}" class="avatar" alt="Avatar">
                         {% endif %}
-                        <span class="d-none d-lg-inline">{{ user.username }}</span>
-                        <i class="bi bi-chevron-down"></i>
+
+                        <span>{{ user.username }}</span>
                     </a>
+
                     <ul class="dropdown-menu dropdown-menu-end shadow-sm">
-                        <li>
-                            <a class="dropdown-item" href="{% url 'edit_profile' user.pk %}">Profile</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="{% url 'password_change' %}">Change password</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="#">Delete account</a>
-                        </li>
+                        <li><a class="dropdown-item" href="{% url 'edit_profile' user.pk %}">Profile</a></li>
+                        <li><a class="dropdown-item" href="{% url 'password_change' %}">Change password</a></li>
+                        <li><a class="dropdown-item text-danger" href="#">Delete account</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
@@ -129,9 +133,8 @@
                             </form>
                         </li>
                     </ul>
-                </div>
-            </div>
-
+                </li>
+            </ul>
         </div>
     </div>
 </nav>
