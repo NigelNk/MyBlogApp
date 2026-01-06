@@ -1,6 +1,6 @@
 Building Blog Platform with python-django v6.
-Django-based web application allowing users to create accounts, write, edit, and manage articles across multiple categories (Technology, Health, Science, Politics), with commenting and liking functionality.
-Still in developement
+Django-based web application allowing users to create accounts, write, edit, and manage articles across multiple categories (Technology, Health, Science, Politics), with commenting and liking functionality with clean simple UI.
+Still in developement.
 
 <img width="1912" height="959" alt="Screenshot 2026-01-06 201759" src="https://github.com/user-attachments/assets/3b946eb3-c203-4acb-b3fc-682c6efeeea4" />
 <img width="1891" height="975" alt="Screenshot 2026-01-06 201817" src="https://github.com/user-attachments/assets/37c320d6-05bd-429b-a853-52c00d6ef8f9" />
