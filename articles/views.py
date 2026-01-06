@@ -24,6 +24,12 @@ class ArticleView(LoginRequiredMixin, ListView):
     template_name = 'articles/articles.html'
     login_url = reverse_lazy('login')
 
+class PersonalArticleView(LoginRequiredMixin, ListView):
+    model = Article
+    context_object_name = 'articles'
+    template_name = 'articles/personal_articles.html'
+    login_url = reverse_lazy('login')
+
 
 class ArticleDetail(LoginRequiredMixin, DetailView):
     model = Article

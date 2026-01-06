@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
+
 {% load static %}
 
-{% block title %}Articles{% endblock %}
+{% block title %}
+    Articles
+{% endblock %}
 
 {% block content %}
-
-    {% include 'pages/header/header.html' %}
-
     <style>
         .article-card {
             border-radius: 14px;
@@ -41,6 +41,7 @@
             font-size: 0.95rem;
         }
     </style>
+    {% include 'pages/header/header.html' %}
 
     <div class="container my-4">
         <div class="row justify-content-center">
@@ -48,7 +49,7 @@
             <div class="col-lg-8 col-md-10">
 
                 {% for article in articles %}
-                    {% if article.author == user %}
+                    {% if article.author != user %}
                         <div class="card shadow-sm mb-4 article-card">
 
                             <!-- Header -->
@@ -74,80 +75,6 @@
                                     </div>
                                 </div>
 
-                                <div class="d-flex align-items-center ms-lg-auto user-dropdown">
-                                    <div class="dropdown">
-                                        <a href="#" class="d-flex align-items-center gap-2 text-decoration-none"
-                                           data-bs-toggle="dropdown">
-                                            <i class="bi bi-three-dots text-muted"></i>
-                                        </a>
-                                        <ul class="dropdown-menu dropdown-menu-end shadow-sm">
-                                            <li>
-                                                <a class="dropdown-item" href="{% url 'edit_profile' user.pk %}">Edit
-                                                    article</a>
-                                            </li>
-                                            <li>
-                                                <a class="dropdown-item" href="{% url 'password_change' %}">Delete
-                                                    article</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-
-                            <!-- Body -->
-                            <div class="card-body">
-
-                                <h5 class="fw-bold mb-2">
-                                    {{ article.title }}
-                                </h5>
-
-                                <p class="article-excerpt text-muted mb-2">
-                                    {{ article.content|striptags|truncatewords:45 }}
-                                </p>
-
-                                {% if article.image %}
-                                    <img src="{{ article.image.url }}"
-                                         class="article-image mb-3"
-                                         alt="{{ article.title }}">
-                                {% endif %}
-
-                            </div>
-
-                            <!-- Footer -->
-                            <div class="card-footer bg-white border-0">
-                                <a href="{% url 'article_detail' article.pk %}" class="read-more-link">
-                                    Read more →
-                                </a>
-                            </div>
-
-                        </div>
-                    {% else %}
-                        <div class="card shadow-sm mb-4 article-card">
-
-                            <!-- Header -->
-                            <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
-                                <div class="d-flex align-items-center">
-                                    <img src="{{ article.author.profile.image_url.url|default:'https://via.placeholder.com/50' }}"
-                                         class="rounded-circle me-3"
-                                         width="50"
-                                         height="50"
-                                         alt="Author">
-
-                                    <div>
-                                        <h6 class="mb-0 fw-semibold">
-                                            {{ article.author.profile.get_full_name|default:article.author.username }}
-                                        </h6>
-                                        <small class="text-muted">
-                                            {{ article.author.profile.short_bio }}
-                                        </small>
-                                        <br/>
-                                        <small class="text-muted">
-                                            {{ article.created_at|date:"M d, Y" }} · {{ article.category|title }}
-                                        </small>
-                                    </div>
-                                </div>
-                                
                             </div>
                             <hr>
 
@@ -179,15 +106,8 @@
 
                         </div>
                     {% endif %}
-                {% empty %}
-                    <p class="text-center text-muted mt-5">
-                        No articles available.
-                    </p>
                 {% endfor %}
-
             </div>
-
         </div>
     </div>
-
 {% endblock %}

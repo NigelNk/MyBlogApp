@@ -88,13 +88,13 @@
 
                 <li class="nav-item">
                     <a class="nav-link {% if request.path == '/articles/' %}active{% endif %}"
-                       href="#">
+                       href="{% url 'articles' %}">
                         Articles
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'articles' %}">My Articles</a>
+                    <a class="nav-link" href="{% url 'personal_articles' %}">My Articles</a>
                 </li>
 
                 <li class="nav-item">

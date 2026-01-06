@@ -98,14 +98,14 @@
 
                         <li class="nav-item">
                             <a class="nav-link {% if request.path == '/articles/' %}active{% endif %}"
-                               href="#">
+                               href="{% url 'articles' %}">
                                 Articles
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link {% if request.resolver_match.url_name == 'articles/' %}active{% endif %}"
-                               href="{% url 'articles' %}">
+                            <a class="nav-link {% if request.resolver_match.url_name == 'articles' %}active{% endif %}"
+                               href="{% url 'personal_articles'%}">
                                 My articles
                             </a>
                         </li>
