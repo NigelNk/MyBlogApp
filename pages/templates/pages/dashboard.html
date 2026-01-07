@@ -35,31 +35,17 @@
             color: #0d6efd !important;
         }
 
+        .user-link:hover {
+            font-weight: 600;
+            color: #0d6efd !important;
+        }
+
         .dropdown-menu a.dropdown-item:hover {
             background-color: #f8f9fa;
         }
 
-        /* User avatar */
-        .avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid #0d6efd;
-        }
-
         .user-dropdown span {
             font-weight: 500;
-        }
-
-        .navbar-toggler {
-            border: none;
-        }
-
-        /* Search form */
-        .search-form {
-            max-width: 600px;
-            margin: auto;
         }
 
         .search-form input {
@@ -69,103 +55,278 @@
         .search-form button {
             border-radius: 0 50px 50px 0;
         }
+
+        /* Trending Sidebar */
+        .trending-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 14px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
+        }
+
+        .trending-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .trending-title {
+            font-weight: 600;
+            color: #1a1a1a;
+            text-decoration: none;
+            line-height: 1.4;
+        }
+
+        .trending-title:hover {
+            color: #0d6efd;
+        }
+
+        aside h6 {
+            letter-spacing: 0.08em;
+            font-size: 0.75rem;
+        }
+
+        .article-image {
+            width: 100%;
+            max-height: 380px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .profile-picture {
+            border: 2px solid #0d6efd;
+        }
+
+        .additional-link {
+            padding-right: 2rem;
+        }
+
     </style>
 
     {% if user.is_authenticated %}
-        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-3 px-lg-4 mb-4">
-            <div class="container-fluid">
 
-                <!-- Brand -->
-                <a class="navbar-brand d-flex align-items-center" href="{% url 'user_dashboard' %}">
-                    <img src="{% static 'images/blog_pic.png' %}" alt="Logo" width="40" height="40">
-                    Blog Platform
-                </a>
+        {% include 'pages/header/header.html' %}
 
-                <!-- Hamburger -->
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
-                        aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+        <!-- MAIN FEED LAYOUT -->
+        <div class="container-fluid px-5 mt-4">
+            <div class="row g-4">
 
-                <!-- Nav links -->
-                <div class="collapse navbar-collapse" id="mainNavbar">
+                <!-- CENTER CONTENT -->
+                <main class="col-lg-8 col-md-12">
+                    <!-- Search Form -->
+                    <div class="container-fluid px-2 px-md-4 px-xxl-5 mt-4 mb-5">
+                        <div class="row justify-content-center">
+                            <div class="col-md-12 col-lg-8 mb-4">
+                                <form class="d-flex shadow-sm rounded-pill overflow-hidden">
+                                    <input class="form-control border-0 px-4 py-2" type="search"
+                                           placeholder="Search articles, authors, topics..." aria-label="Search">
+                                    <button class="btn btn-primary px-4" type="submit">
+                                        <i class="bi bi-search"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        {% for article in articles %}
+                            <!-- Cards -->
+                            <div class="card shadow-sm mb-4">
 
-                    <ul class="navbar-nav navbar-center gap-lg-3 mx-auto text-center text-lg-start">
-                        <li class="nav-item">
-                            <a class="nav-link {% if request.path == '/dashboard/' %}active{% endif %}"
-                               href="{% url 'user_dashboard' %}">Home</a>
-                        </li>
+                                <div class="d-flex justify-content-between align-items-center additional-link">
+                                    <!-- Header -->
+                                    <div class="card-header bg-white border-0 d-flex align-items-center">
+                                        {% if article.author.profile.image_url %}
+                                            <img src="{{ article.author.profile.image_url.url }}"
+                                                 class="rounded-circle me-3 profile-picture"
+                                                 width="60" height="60" alt="Author">
+                                        {% else %}
+                                            <img src="{% static 'images/default-avatar.png' %}"
+                                                 class="rounded-circle me-3 profile-picture"
+                                                 width="60" height="60" alt="Author">
+                                        {% endif %}
 
-                        <li class="nav-item">
-                            <a class="nav-link {% if request.path == '/articles/' %}active{% endif %}"
-                               href="{% url 'articles' %}">
-                                Articles
-                            </a>
-                        </li>
+                                        <div>
+                                            <h6 class="mb-0 fw-semibold">
+                                                {% if article.author == user %}
+                                                    <a href="{% url 'edit_profile' article.pk %}"
+                                                       class="text-decoration-none text-dark user-link">{{ article.author.profile.get_full_name|default:article.author.username }}
+                                                    </a>
+                                                {% else %}
+                                                    <a href="#"
+                                                       class="text-decoration-none text-dark user-link">{{ article.author.profile.get_full_name|default:article.author.username }}
+                                                    </a>
+                                                {% endif %}
+                                            </h6>
+                                            <small class="text-muted">{{ article.author.profile.short_bio }}</small><br>
+                                            <small class="text-muted">
+                                                {{ article.created_at|date:"M d, Y" }} · {{ article.category|title }}
+                                            </small>
+                                        </div>
+                                    </div>
+                                    {% if article.author == user %}
+                                        <!-- additional links -->
+                                        <div class="d-flex align-items-center ms-lg-auto user-dropdown">
+                                            <div class="dropdown">
+                                                <a href="#" class="d-flex align-items-center gap-2 text-decoration-none"
+                                                   data-bs-toggle="dropdown">
+                                                    <i class="bi bi-three-dots text-muted"></i>
+                                                </a>
+                                                <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                                                    <li>
+                                                        <a class="dropdown-item"
+                                                           href="{% url 'edit_profile' user.pk %}">
+                                                            Edit article
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="{% url 'password_change' %}">
+                                                            Delete article
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
 
-                        <li class="nav-item">
-                            <a class="nav-link {% if request.resolver_match.url_name == 'articles' %}active{% endif %}"
-                               href="{% url 'personal_articles'%}">
-                                My articles
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'create_article' %}">Create Article</a>
-                        </li>
-                    </ul>
+                                <hr class="my-0">
 
-                    <!-- User dropdown -->
-                    <div class="d-flex align-items-center ms-lg-auto user-dropdown">
-                        <div class="dropdown">
-                            <a href="#" class="d-flex align-items-center gap-2 text-decoration-none"
-                               data-bs-toggle="dropdown">
-                                {% if user.profile.image_url %}
-                                    <img src="{{ user.profile.image_url.url }}" alt="Profile picture"
-                                         class="rounded-circle" height="40" width="40">
-                                {% else %}
-                                    <img src="{% static 'images/default-avatar.png' %}" alt="Default avatar">
-                                {% endif %}
-                                <span class="d-none d-lg-inline">{{ user.username }}</span>
-                                <i class="bi bi-chevron-down"></i>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end shadow-sm">
-                                <li>
-                                    <a class="dropdown-item" href="{% url 'edit_profile' user.pk %}">Profile</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="{% url 'password_change' %}">Change password</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="#">Delete account</a>
-                                </li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li>
-                                    <form method="post" action="{% url 'logout' %}">
-                                        {% csrf_token %}
-                                        <button type="submit" class="dropdown-item">Logout</button>
-                                    </form>
-                                </li>
-                            </ul>
+                                <!-- Body -->
+                                <div class="card-body">
+                                    <h5 class="fw-bold mb-2">
+                                        {{ article.title }}
+                                    </h5>
+
+                                    <p class="text-muted mb-3">
+                                        {{ article.content|striptags|truncatewords:45 }}
+                                    </p>
+
+                                    {% if article.image %}
+                                        <img src="{{ article.image.url }}"
+                                             class="article-image mb-3"
+                                             alt="{{ article.title }}">
+                                    {% endif %}
+                                </div>
+
+                                <!-- Footer -->
+                                <div class="card-footer bg-white border-0">
+                                    <a href="#" class="text-decoration-none fw-semibold">
+                                        Read more →
+                                    </a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                </main>
+
+                <!-- RIGHT SIDEBAR -->
+                <aside class="col-lg-4 d-none d-lg-block">
+                    <div class="sticky-top" style="top: 90px;">
+
+                        <!-- Section title -->
+                        <div class="d-flex align-items-center mb-3">
+                            <h6 class="fw-bold text-uppercase mb-0">Trending Articles</h6>
+                            <div class="flex-grow-1 ms-3 border-bottom"></div>
+                        </div>
+
+                        <!-- cards -->
+                        <div class="card trending-card mb-3 border-0">
+                            <div class="card-body p-3">
+
+                                <!-- Author -->
+                                <div class="d-flex align-items-center mb-3">
+                                    <img src="{% static 'images/default-avatar.png' %}"
+                                         class="rounded-circle me-3"
+                                         width="40"
+                                         height="40"
+                                         alt="Author">
+
+                                    <div>
+                                        <div class="fw-semibold small">Nigel Nk</div>
+                                        <div class="text-muted small">Programmer</div>
+                                    </div>
+                                </div>
+
+                                <!-- title -->
+                                <a href="#" class="trending-title d-block mb-2">
+                                    Vibe Coding Explained
+                                </a>
+
+                                <!-- views and likes -->
+                                <div class="d-flex align-items-center text-muted small">
+                                        <span class="me-3">
+                                            <i class="bi bi-eye me-1"></i>1.2k
+                                        </span>
+                                    <span>
+                                            <i class="bi bi-heart me-1"></i>320
+                                        </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card trending-card mb-3 border-0">
+                            <div class="card-body p-3">
+
+                                <!-- Author -->
+                                <div class="d-flex align-items-center mb-3">
+                                    <img src="{% static 'images/default-avatar.png' %}"
+                                         class="rounded-circle me-3"
+                                         width="40"
+                                         height="40"
+                                         alt="Author">
+
+                                    <div>
+                                        <div class="fw-semibold small">Nigel Nk</div>
+                                        <div class="text-muted small">Programmer</div>
+                                    </div>
+                                </div>
+
+                                <!-- title -->
+                                <a href="#" class="trending-title d-block mb-2">
+                                    Vibe Coding Explained
+                                </a>
+
+                                <!-- views and likes -->
+                                <div class="d-flex align-items-center text-muted small">
+                                        <span class="me-3">
+                                            <i class="bi bi-eye me-1"></i>1.2k
+                                        </span>
+                                    <span>
+                                            <i class="bi bi-heart me-1"></i>320
+                                        </span>
+                                </div>
+                            </div>
+                        </div>
+                        <!--cards-->
+                        <div class="card trending-card mb-3 border-0">
+                            <div class="card-body p-3">
+                                <!-- Author -->
+                                <div class="d-flex align-items-center mb-3">
+                                    <img src="{% static 'images/default-avatar.png' %}"
+                                         class="rounded-circle me-3"
+                                         width="40"
+                                         height="40"
+                                         alt="Author">
+
+                                    <div>
+                                        <div class="fw-semibold small">Nigel Nk</div>
+                                        <div class="text-muted small">Programmer</div>
+                                    </div>
+                                </div>
+
+                                <!-- title -->
+                                <a href="#" class="trending-title d-block mb-2">
+                                    Vibe Coding Explained
+                                </a>
+
+                                <!-- views and likes -->
+                                <div class="d-flex align-items-center text-muted small">
+                                        <span class="me-3">
+                                            <i class="bi bi-eye me-1"></i>1.2k
+                                        </span>
+                                    <span>
+                                            <i class="bi bi-heart me-1"></i>320
+                                        </span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </nav>
-
-        <!-- Search Form -->
-        <div class="container my-4">
-            <div class="row justify-content-center">
-                <div class="col-md-12 col-lg-8">
-                    <form class="d-flex shadow-sm rounded-pill overflow-hidden">
-                        <input class="form-control border-0 px-4 py-2" type="search"
-                               placeholder="Search articles, authors, topics..." aria-label="Search">
-                        <button class="btn btn-primary px-4" type="submit">
-                            <i class="bi bi-search"></i>
-                        </button>
-                    </form>
-                </div>
+                </aside>
             </div>
         </div>
     {% endif %}

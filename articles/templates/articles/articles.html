@@ -63,7 +63,7 @@
 
                                     <div>
                                         <h6 class="mb-0 fw-semibold">
-                                            {{ article.author.profile.get_full_name|default:article.author.username }}
+                                            <a href="#" class="text-decoration-none fw-semibold text-dark">{{ article.author.profile.get_full_name|default:article.author.username }}</a>
                                         </h6>
                                         <small class="text-muted">
                                             {{ article.author.profile.short_bio }}

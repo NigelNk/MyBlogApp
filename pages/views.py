@@ -3,6 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, UpdateView
 
+from articles.models import Article
 from users.models import UserProfile, UserAccount
 
 
@@ -11,8 +12,8 @@ class HomePageView(TemplateView):
 
 
 class DashboardView(LoginRequiredMixin, ListView):
-    model = UserProfile
-    context_object_name = 'user_profile'
+    model = Article
+    context_object_name = 'articles'
     template_name = 'pages/dashboard.html'
     login_url = reverse_lazy('login')
 
