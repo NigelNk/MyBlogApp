@@ -9,10 +9,20 @@
         <div class="container d-flex justify-content-center">
             <div class="card shadow-sm border-0" style="max-width: 420px; width: 100%;">
                 <div class="card-body p-4">
-
-                    <h3 class="text-center mb-4 fw-semibold">Welcome back,</h3>
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert {{ message.tags }}">
+                                <div class="alert alert-success" role="alert">
+                                    Account created successfully, please login
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <h3 class="text-center mb-4 fw-semibold">Welcome back,</h3>
+                    {% endif %}
                     {% if form.errors %}
-                        <div class="alert alert-warning text-danger small" role="alert">Please enter a correct username or password. Note that both
+                        <div class="alert alert-warning text-danger small" role="alert">Please enter a correct username
+                            or password. Note that both
                             fields may be case-sensitive
                         </div>
                     {% endif %}
