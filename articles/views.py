@@ -30,6 +30,9 @@ class PersonalArticleView(LoginRequiredMixin, ListView):
     ordering = ['created_at']
     paginate_by = 3
 
+    def get_queryset(self):
+        return Article.objects.filter(author=self.request.user)
+
 
 class ArticleDetail(LoginRequiredMixin, DetailView):
     model = Article
