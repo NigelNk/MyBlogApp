@@ -43,6 +43,15 @@
     <div class="container my-4">
         <div class="row justify-content-center">
             <div class="col-lg-8 col-md-10">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert {{ message.tags }}">
+                            <div class="alert alert-success" role="alert">
+                                You have deleted 1 article
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
 
                 {% for article in articles %}
                     {% if article.author == user %}
