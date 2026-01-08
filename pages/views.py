@@ -21,6 +21,9 @@ class DashboardView(LoginRequiredMixin, ListView):
     template_name = 'pages/dashboard.html'
     login_url = reverse_lazy('login')
 
+    ordering = ['created_at']
+    paginate_by = 3
+
 
 class EditUserProfileView(LoginRequiredMixin, UpdateView):
     model = UserProfile
