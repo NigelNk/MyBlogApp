@@ -24,6 +24,8 @@ class PersonalArticleView(LoginRequiredMixin, ListView):
     context_object_name = 'articles'
     template_name = 'articles/personal_articles.html'
     login_url = reverse_lazy('login')
+    ordering = ['created_at']
+    paginate_by = 3
 
 
 class ArticleDetail(LoginRequiredMixin, DetailView):

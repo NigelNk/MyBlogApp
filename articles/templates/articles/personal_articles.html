@@ -95,12 +95,14 @@
                                         </a>
                                         <ul class="dropdown-menu dropdown-menu-end shadow-sm">
                                             <li>
-                                                <a class="dropdown-item" href="{% url 'edit_profile' user.pk %}">Edit
-                                                    article</a>
+                                                <a class="dropdown-item" href="{% url 'edit_profile' user.pk %}">
+                                                    Edit article
+                                                </a>
                                             </li>
                                             <li>
-                                                <a class="dropdown-item" href="{% url 'password_change' %}">Delete
-                                                    article</a>
+                                                <a class="dropdown-item" href="{% url 'article_delete' article.pk %}">
+                                                    Delete article
+                                                </a>
                                             </li>
                                         </ul>
                                     </div>
@@ -110,15 +112,12 @@
 
                             <!-- Body -->
                             <div class="card-body">
-
                                 <h5 class="fw-bold mb-2">
                                     {{ article.title }}
                                 </h5>
-
                                 <p class="article-excerpt text-muted mb-2">
                                     {{ article.content|striptags|truncatewords:45 }}
                                 </p>
-
                                 {% if article.image %}
                                     <img src="{{ article.image.url }}"
                                          class="article-image mb-3"
@@ -142,8 +141,57 @@
                     </p>
                 {% endfor %}
 
-            </div>
+                <!--paginated-->
+                <nav aria-label="Page navigation" class="mt-4">
+                    <ul class="pagination justify-content-center flex-wrap gap-1">
 
+                        <!-- Previous -->
+                        {% if is_paginated %}
+                            <nav class="mt-5">
+                                <ul class="pagination justify-content-center align-items-center gap-1">
+
+                                    <!-- Previous -->
+                                    <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
+                                        <a class="page-link rounded-pill px-3"
+                                           href="{% if page_obj.has_previous %}?page=
+                                               {{ page_obj.previous_page_number }}{% else %}#{% endif %}">
+                                            <i class="bi bi-chevron-left"></i>
+                                        </a>
+                                    </li>
+
+                                    <!-- Page Numbers (windowed) -->
+                                    {% for num in paginator.page_range %}
+                                        {% if num >= page_obj.number|add:'-2' and num <= page_obj.number|add:'2' %}
+                                            {% if page_obj.number == num %}
+                                                <li class="page-item active">
+                                                <span class="page-link rounded-pill px-3">
+                                                    {{ num }}
+                                                </span>
+                                                </li>
+                                            {% else %}
+                                                <li class="page-item">
+                                                    <a class="page-link rounded-pill px-3"
+                                                       href="?page={{ num }}">
+                                                        {{ num }}
+                                                    </a>
+                                                </li>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    <!-- Next -->
+                                    <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
+                                        <a class="page-link rounded-pill px-3"
+                                           href="{% if page_obj.has_next %}?page=
+                                               {{ page_obj.next_page_number }}{% else %}#{% endif %}">
+                                            <i class="bi bi-chevron-right"></i>
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            </nav>
+                        {% endif %}
+            </div>
         </div>
     </div>
 
