@@ -5,6 +5,95 @@
 {% endblock %}
 
 {% block content %}
+    <style>
+        .form-select {
+            border-radius: 10px;
+            padding: 0.55rem 0.9rem;
+            font-size: 0.95rem;
+        }
+
+        .form-select:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.15rem rgba(13, 110, 253, 0.15);
+        }
+
+        .search-form input {
+            border-radius: 50px 0 0 50px;
+        }
+
+        .search-form button {
+            border-radius: 0 50px 50px 0;
+        }
+
+        /* Trending Sidebar */
+        .trending-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 14px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
+        }
+
+        .trending-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .trending-title {
+            font-weight: 600;
+            color: #1a1a1a;
+            text-decoration: none;
+            line-height: 1.4;
+        }
+
+        .trending-title:hover {
+            color: #0d6efd;
+        }
+
+        aside h6 {
+            letter-spacing: 0.08em;
+            font-size: 0.75rem;
+        }
+
+        .article-image {
+            width: 100%;
+            max-height: 380px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .profile-picture {
+            border: 2px solid #0d6efd;
+        }
+
+        .additional-link {
+            padding-right: 2rem;
+        }
+
+        .pagination .page-link {
+            border: none;
+            background-color: #f8f9fa;
+            color: #333;
+            transition: all 0.2s ease;
+        }
+
+        .pagination .page-link:hover {
+            background-color: #0d6efd;
+            color: #fff;
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: #0d6efd;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .pagination .page-item.disabled .page-link {
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+
+    </style>
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom py-3">
             <div class="container-fluid">
@@ -79,29 +168,296 @@
         </nav>
     </header>
 
-    <div class="container py-2">
-        <div class="container my-4">
-            <div class="row justify-content-center">
-                <div class="col-md-12 col-lg-8">
-                    <!-- Search Form -->
-                    <form class="d-flex shadow-sm rounded-pill overflow-hidden"> {% csrf_token %}
-                        <input class="form-control border-0 px-4 py-2"
-                               type="search"
-                               placeholder="Search articles, authors, topics..."
-                               aria-label="Search">
-                        <!-- Search Button -->
-                        <button class="btn btn-primary px-4" type="submit">
-                            <i class="bi bi-search"></i>
-                        </button>
-                    </form>
+    <!-- MAIN FEED LAYOUT -->
+    <div class="container-fluid px-5 mt-4">
+        <div class="row g-4">
+
+            <!-- CENTER CONTENT -->
+            <main class="col-lg-8 col-md-12">
+                <!-- Search Form -->
+                <div class="container-fluid px-2 px-md-4 px-xxl-5 mt-4 mb-5">
+                    <div class="row justify-content-center">
+                        <div class="col-md-12 col-lg-8 mb-4">
+                            <form class="d-flex shadow-sm rounded-pill overflow-hidden">
+                                <input class="form-control border-0 px-4 py-2" type="search"
+                                       placeholder="Search articles, authors, topics..." aria-label="Search">
+                                <button class="btn btn-primary px-4" type="submit">
+                                    <i class="bi bi-search"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="mb-3" style="max-width: 260px;">
+                        <label for="category" class="form-label fw-semibold text-muted">
+                            Category
+                        </label>
+                        <select id="category" name="category" class="form-select shadow-sm">
+                            <option value="all" selected>All</option>
+                            <option value="health">Health</option>
+                            <option value="science">Science</option>
+                            <option value="technology">Technology</option>
+                            <option value="politics">Politics</option>
+                            <option value="business">Business</option>
+                        </select>
+                    </div>
+
+                    {% for article in articles %}
+                        <!-- Cards -->
+                        <div class="card shadow-sm mb-4">
+
+                            <div class="d-flex justify-content-between align-items-center additional-link">
+                                <!-- Header -->
+                                <div class="card-header bg-white border-0 d-flex align-items-center">
+                                    {% if article.author.profile.image_url %}
+                                        <img src="{{ article.author.profile.image_url.url }}"
+                                             class="rounded-circle me-3 profile-picture"
+                                             width="60" height="60" alt="Author">
+                                    {% else %}
+                                        <img src="{% static 'images/default-avatar.png' %}"
+                                             class="rounded-circle me-3 profile-picture"
+                                             width="60" height="60" alt="Author">
+                                    {% endif %}
+
+                                    <div>
+                                        <h6 class="mb-0 fw-semibold">
+                                            {% if article.author == user %}
+                                                <a href="{% url 'edit_profile' article.pk %}"
+                                                   class="text-decoration-none text-dark user-link">{{ article.author.profile.get_full_name|default:article.author.username }}
+                                                </a>
+                                            {% else %}
+                                                <a href="#"
+                                                   class="text-decoration-none text-dark user-link">{{ article.author.profile.get_full_name|default:article.author.username }}
+                                                </a>
+                                            {% endif %}
+                                        </h6>
+                                        <small class="text-muted">{{ article.author.profile.short_bio }}</small><br>
+                                        <small class="text-muted">
+                                            {{ article.created_at|date:"M d, Y" }} · {{ article.category|title }}
+                                        </small>
+                                    </div>
+                                </div>
+                                {% if article.author == user %}
+                                    <!-- additional links -->
+                                    <div class="d-flex align-items-center ms-lg-auto user-dropdown">
+                                        <div class="dropdown">
+                                            <a href="#" class="d-flex align-items-center gap-2 text-decoration-none"
+                                               data-bs-toggle="dropdown">
+                                                <i class="bi bi-three-dots text-muted"></i>
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                                                <li>
+                                                    <a class="dropdown-item"
+                                                       href="{% url 'edit_profile' user.pk %}">
+                                                        Edit article
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item" href="{% url 'password_change' %}">
+                                                        Delete article
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <hr class="my-0">
+
+                            <!-- Body -->
+                            <div class="card-body">
+                                <h5 class="fw-bold mb-2">
+                                    {{ article.title }}
+                                </h5>
+
+                                <p class="text-muted mb-3">
+                                    {{ article.content|striptags|truncatewords:45 }}
+                                </p>
+
+                                {% if article.image %}
+                                    <img src="{{ article.image.url }}"
+                                         class="article-image mb-3"
+                                         alt="{{ article.title }}">
+                                {% endif %}
+                            </div>
+
+                            <!-- Footer -->
+                            <div class="card-footer bg-white border-0">
+                                <a href="#" class="text-decoration-none fw-semibold">
+                                    Read more →
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <!--paginated-->
+                    <nav aria-label="Page navigation" class="mt-4">
+                        <ul class="pagination justify-content-center">
+
+                            <!-- Previous -->
+                            {% if is_paginated %}
+                                <nav class="mt-5">
+                                    <ul class="pagination justify-content-center align-items-center gap-1">
+
+                                        <!-- Previous -->
+                                        <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
+                                            <a class="page-link rounded-pill px-3"
+                                               href="{% if page_obj.has_previous %}?page=
+                                                   {{ page_obj.previous_page_number }}{% else %}#{% endif %}">
+                                                <i class="bi bi-chevron-left"></i>
+                                            </a>
+                                        </li>
+
+                                        <!-- Page Numbers (windowed) -->
+                                        {% for num in paginator.page_range %}
+                                            {% if num >= page_obj.number|add:'-2' and num <= page_obj.number|add:'2' %}
+                                                {% if page_obj.number == num %}
+                                                    <li class="page-item active">
+                                                    <span class="page-link rounded-pill px-3">
+                                                        {{ num }}
+                                                    </span>
+                                                    </li>
+                                                {% else %}
+                                                    <li class="page-item">
+                                                        <a class="page-link rounded-pill px-3"
+                                                           href="?page={{ num }}">
+                                                            {{ num }}
+                                                        </a>
+                                                    </li>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endfor %}
+
+                                        <!-- Next -->
+                                        <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
+                                            <a class="page-link rounded-pill px-3"
+                                               href="{% if page_obj.has_next %}?page=
+                                                   {{ page_obj.next_page_number }}{% else %}#{% endif %}">
+                                                <i class="bi bi-chevron-right"></i>
+                                            </a>
+                                        </li>
+
+                                    </ul>
+                                </nav>
+                            {% endif %}
+
                 </div>
-            </div>
-        </div>
-        <!-- banner -->
+            </main>
 
-        <div class="text-dark d-flex justify-content-center justify-content-md-start">
 
+            <!-- RIGHT SIDEBAR -->
+            <aside class="col-lg-4 d-none d-lg-block">
+                <div class="sticky-top" style="top: 90px;">
+
+                    <!-- Section title -->
+                    <div class="d-flex align-items-center mb-3">
+                        <h6 class="fw-bold text-uppercase mb-0">Trending Articles</h6>
+                        <div class="flex-grow-1 ms-3 border-bottom"></div>
+                    </div>
+
+                    <!-- cards -->
+                    <div class="card trending-card mb-3 border-0">
+                        <div class="card-body p-3">
+
+                            <!-- Author -->
+                            <div class="d-flex align-items-center mb-3">
+                                <img src="{% static 'images/default-avatar.png' %}"
+                                     class="rounded-circle me-3"
+                                     width="40"
+                                     height="40"
+                                     alt="Author">
+
+                                <div>
+                                    <div class="fw-semibold small">Nigel Nk</div>
+                                    <div class="text-muted small">Programmer</div>
+                                </div>
+                            </div>
+
+                            <!-- title -->
+                            <a href="#" class="trending-title d-block mb-2">
+                                Vibe Coding Explained
+                            </a>
+
+                            <!-- views and likes -->
+                            <div class="d-flex align-items-center text-muted small">
+                                <span class="me-3">
+                                    <i class="bi bi-eye me-1"></i>1.2k
+                                </span>
+                                <span>
+                                    <i class="bi bi-heart me-1"></i>320
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card trending-card mb-3 border-0">
+                        <div class="card-body p-3">
+
+                            <!-- Author -->
+                            <div class="d-flex align-items-center mb-3">
+                                <img src="{% static 'images/default-avatar.png' %}"
+                                     class="rounded-circle me-3"
+                                     width="40"
+                                     height="40"
+                                     alt="Author">
+
+                                <div>
+                                    <div class="fw-semibold small">Nigel Nk</div>
+                                    <div class="text-muted small">Programmer</div>
+                                </div>
+                            </div>
+
+                            <!-- title -->
+                            <a href="#" class="trending-title d-block mb-2">
+                                Vibe Coding Explained
+                            </a>
+
+                            <!-- views and likes -->
+                            <div class="d-flex align-items-center text-muted small">
+                                <span class="me-3">
+                                    <i class="bi bi-eye me-1"></i>1.2k
+                                </span>
+                                <span>
+                                    <i class="bi bi-heart me-1"></i>320
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <!--cards-->
+                    <div class="card trending-card mb-3 border-0">
+                        <div class="card-body p-3">
+                            <!-- Author -->
+                            <div class="d-flex align-items-center mb-3">
+                                <img src="{% static 'images/default-avatar.png' %}"
+                                     class="rounded-circle me-3"
+                                     width="40"
+                                     height="40"
+                                     alt="Author">
+
+                                <div>
+                                    <div class="fw-semibold small">Nigel Nk</div>
+                                    <div class="text-muted small">Programmer</div>
+                                </div>
+                            </div>
+
+                            <!-- title -->
+                            <a href="#" class="trending-title d-block mb-2">
+                                Vibe Coding Explained
+                            </a>
+
+                            <!-- views and likes -->
+                            <div class="d-flex align-items-center text-muted small">
+                                <span class="me-3">
+                                    <i class="bi bi-eye me-1"></i>1.2k
+                                </span>
+                                <span>
+                                    <i class="bi bi-heart me-1"></i>320
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
         </div>
+    </div>
 
     </div>
 

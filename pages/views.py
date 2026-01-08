@@ -7,8 +7,12 @@ from articles.models import Article
 from users.models import UserProfile, UserAccount
 
 
-class HomePageView(TemplateView):
-    template_name = 'pages/index.html'
+class HomePageView(ListView):
+    model = Article
+    context_object_name = 'articles'
+    template_name = "pages/index.html"
+    ordering = ['created_at']
+    paginate_by = 3
 
 
 class DashboardView(LoginRequiredMixin, ListView):
