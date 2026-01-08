@@ -1,0 +1,76 @@
+{% if author != request.user %}
+    <div class="modal fade" id="profileModal-{{ article.author.id }}" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content border-0 shadow">
+
+                <!-- Header -->
+                <div class="modal-header border-0">
+                    <h5 class="modal-title fw-semibold">
+                        {{ article.author.profile.get_full_name|default:article.author.username }}
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <!-- Body -->
+                <div class="modal-body text-center px-4">
+
+                    <!-- Profile Image -->
+                    {% if article.author.profile.image_url %}
+                        <img src="{{ article.author.profile.image_url.url }}"
+                             class="rounded-circle mb-3"
+                             width="110" height="110"
+                             style="object-fit: cover;" alt="profile_pic">
+                    {% else %}
+                        <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center mx-auto mb-3"
+                             style="width:110px;height:110px;font-size:36px;">
+                            {{ article.author.username|slice:":1"|upper }}
+                        </div>
+                    {% endif %}
+
+                    <!-- Short Bio -->
+                    {% if article.author.profile.short_bio %}
+                        <p class="text-muted mb-2">
+                            {{ article.author.profile.short_bio }}
+                        </p>
+                    {% endif %}
+
+                    <!-- Long Bio -->
+                    {% if article.author.profile.long_bio %}
+                        <p class="small text-secondary">
+                            {{ article.author.profile.long_bio }}
+                        </p>
+                    {% endif %}
+
+                    <!-- Social Links -->
+                    <div class="d-flex justify-content-center gap-3 mt-3">
+
+                        {% if article.author.profile.facebook %}
+                            <a href="{{ article.author.profile.facebook }}" target="_blank"
+                               class="text-decoration-none text-primary">
+                                <i class="bi bi-facebook fs-5"></i>
+                            </a>
+                        {% endif %}
+
+                        {% if article.author.profile.twitter %}
+                            <a href="{{ article.author.profile.twitter }}" target="_blank"
+                               class="text-decoration-none text-info">
+                                <i class="bi bi-twitter fs-5"></i>
+                            </a>
+                        {% endif %}
+
+                        {% if article.author.profile.linkedin %}
+                            <a href="{{ article.author.profile.linkedin }}" target="_blank"
+                               class="text-decoration-none text-primary">
+                                <i class="bi bi-linkedin fs-5"></i>
+                            </a>
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+{% endif %}

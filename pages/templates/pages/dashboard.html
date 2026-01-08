@@ -62,6 +62,12 @@
             border-radius: 0 50px 50px 0;
         }
 
+        .article-card {
+            border-radius: 14px;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            overflow: hidden;
+        }
+
         /* Trending Sidebar */
         .trending-card {
             background: rgba(255, 255, 255, 0.95);
@@ -130,7 +136,7 @@
                         </div>
                         {% for article in articles %}
                             <!-- Cards -->
-                            <div class="card shadow-sm mb-4">
+                            <div class="card shadow-sm mb-4 article-card">
 
                                 <div class="d-flex justify-content-between align-items-center additional-link">
                                     <!-- Header -->
@@ -153,8 +159,12 @@
                                                     </a>
                                                 {% else %}
                                                     <a href="#"
-                                                       class="text-decoration-none text-dark user-link">{{ article.author.profile.get_full_name|default:article.author.username }}
+                                                       class="text-decoration-none text-dark user-link"
+                                                       data-bs-toggle="modal"
+                                                       data-bs-target="#profileModal-{{ article.author.id }}">
+                                                        {{ article.author.profile.get_full_name|default:article.author.username }}
                                                     </a>
+                                                    {% include "includes/profile_modal.html" with author=article.author %}
                                                 {% endif %}
                                             </h6>
                                             <small class="text-muted">{{ article.author.profile.short_bio }}</small><br>
@@ -190,7 +200,6 @@
                                 </div>
 
                                 <hr class="my-0">
-
                                 <!-- Body -->
                                 <div class="card-body">
                                     <h5 class="fw-bold mb-2">
@@ -207,10 +216,10 @@
                                              alt="{{ article.title }}">
                                     {% endif %}
                                 </div>
-
                                 <!-- Footer -->
                                 <div class="card-footer bg-white border-0">
-                                    <a href="#" class="text-decoration-none fw-semibold">
+                                    <a href="{% url 'article_detail' article.pk %}"
+                                       class="text-decoration-none fw-semibold">
                                         Read more →
                                     </a>
                                 </div>
