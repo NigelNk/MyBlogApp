@@ -115,232 +115,299 @@
     </style>
 
     {% if user.is_authenticated %}
-        <!-- MAIN FEED LAYOUT -->
-        <div class="container-fluid px-5 mt-4">
-            <div class="row g-4">
+            <!-- MAIN FEED LAYOUT -->
+    <div class="container-fluid px-2 px-sm-3 px-md-4 px-lg-5 mt-4">
+        <div class="row g-4">
 
-                <!-- CENTER CONTENT -->
-                <main class="col-lg-8 col-md-12">
-                    <!-- Search Form -->
-                    <div class="container-fluid px-2 px-md-4 px-xxl-5 mt-4 mb-5">
-                        <div class="row justify-content-center">
-                            <div class="col-md-12 col-lg-8 mb-4">
-                                <form class="d-flex shadow-sm rounded-pill overflow-hidden">
-                                    <input class="form-control border-0 px-4 py-2" type="search"
-                                           placeholder="Search articles, authors, topics..." aria-label="Search">
-                                    <button class="btn btn-primary px-4" type="submit">
-                                        <i class="bi bi-search"></i>
-                                    </button>
-                                </form>
-                            </div>
+            <!-- CENTER CONTENT -->
+            <main class="col-lg-8 col-md-12">
+                <!-- Search Form -->
+                <div class="container-fluid px-2 px-md-4 px-xxl-5 mt-4 mb-5">
+                    <div class="row justify-content-center">
+                        <div class="col-12 col-md-10 col-lg-8 mb-4">
+                            <form class="d-flex w-100 shadow-sm rounded-pill overflow-hidden">
+                                <input class="form-control border-0 px-4 py-2" type="search"
+                                       placeholder="Search articles, authors, topics..." aria-label="Search">
+                                <button class="btn btn-primary px-4" type="submit">
+                                    <i class="bi bi-search"></i>
+                                </button>
+                            </form>
                         </div>
-                        {% for article in articles %}
-                            <!-- Cards -->
-                            <div class="card shadow-sm mb-4 article-card">
+                    </div>
+                    <div class="mb-3 w-100 w-md-auto" style="max-width: 260px;">
+                        <label for="category" class="form-label fw-semibold text-muted">
+                            Category
+                        </label>
+                        <select id="category" name="category" class="form-select shadow-sm">
+                            <option value="all" selected>All</option>
+                            <option value="health">Health</option>
+                            <option value="science">Science</option>
+                            <option value="technology">Technology</option>
+                            <option value="politics">Politics</option>
+                            <option value="business">Business</option>
+                        </select>
+                    </div>
 
-                                <div class="d-flex justify-content-between align-items-center additional-link">
-                                    <!-- Header -->
-                                    <div class="card-header bg-white border-0 d-flex align-items-center">
-                                        {% if article.author.profile.image_url %}
-                                            <img src="{{ article.author.profile.image_url.url }}"
-                                                 class="rounded-circle me-3 profile-picture"
-                                                 width="60" height="60" alt="Author">
-                                        {% else %}
-                                            <img src="{% static 'images/default-avatar.png' %}"
-                                                 class="rounded-circle me-3 profile-picture"
-                                                 width="60" height="60" alt="Author">
-                                        {% endif %}
+                    {% for article in articles %}
+                        <!-- Cards -->
+                        <div class="card shadow-sm mb-4">
 
-                                        <div>
-                                            <h6 class="mb-0 fw-semibold">
-                                                {% if article.author == user %}
-                                                    <a href="{% url 'edit_profile' article.pk %}"
-                                                       class="text-decoration-none text-dark user-link">{{ article.author.profile.get_full_name|default:article.author.username }}
-                                                    </a>
-                                                {% else %}
-                                                    <a href="#"
-                                                       class="text-decoration-none text-dark user-link"
-                                                       data-bs-toggle="modal"
-                                                       data-bs-target="#profileModal-{{ article.author.id }}">
-                                                        {{ article.author.profile.get_full_name|default:article.author.username }}
-                                                    </a>
-                                                    {% include "includes/profile_modal.html" with author=article.author %}
-                                                {% endif %}
-                                            </h6>
-                                            <small class="text-muted">{{ article.author.profile.short_bio }}</small><br>
-                                            <small class="text-muted">
-                                                {{ article.created_at|date:"M d, Y" }} · {{ article.category|title }}
-                                            </small>
-                                        </div>
-                                    </div>
-                                    {% if article.author == user %}
-                                        <!-- additional links -->
-                                        <div class="d-flex align-items-center ms-lg-auto user-dropdown">
-                                            <div class="dropdown">
-                                                <a href="#" class="d-flex align-items-center gap-2 text-decoration-none"
-                                                   data-bs-toggle="dropdown">
-                                                    <i class="bi bi-three-dots text-muted"></i>
+                            <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center additional-link">
+                                <!-- Header -->
+                                <div class="card-header bg-white border-0 d-flex align-items-center">
+                                    {% if article.author.profile.image_url %}
+                                        <img src="{{ article.author.profile.image_url.url }}"
+                                             class="rounded-circle me-3 profile-picture"
+                                             width="60" height="60" alt="Author">
+                                    {% else %}
+                                        <img src="{% static 'images/default-avatar.png' %}"
+                                             class="rounded-circle me-3 profile-picture"
+                                             width="60" height="60" alt="Author">
+                                    {% endif %}
+
+                                    <div>
+                                        <h6 class="mb-0 fw-semibold">
+                                            {% if article.author == user %}
+                                                <a href="{% url 'edit_profile' article.pk %}"
+                                                   class="text-decoration-none text-dark user-link">{{ article.author.profile.get_full_name|default:article.author.username }}
                                                 </a>
-                                                <ul class="dropdown-menu dropdown-menu-end shadow-sm">
-                                                    <li>
-                                                        <a class="dropdown-item"
-                                                           href="{% url 'edit_profile' user.pk %}">
-                                                            Edit article
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="{% url 'password_change' %}">
-                                                            Delete article
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
+                                            {% else %}
+                                                <a href="#"
+                                                   class="text-decoration-none text-dark user-link"
+                                                   data-bs-toggle="modal"
+                                                   data-bs-target="#profileModal-{{ article.author.id }}">
+                                                    {{ article.author.profile.get_full_name|default:article.author.username }}
+                                                </a>
+                                                {% include "includes/profile_modal.html" with author=article.author %}
+                                            {% endif %}
+                                        </h6>
+                                        <small class="text-muted">{{ article.author.profile.short_bio }}</small><br>
+                                        <small class="text-muted">
+                                            {{ article.created_at|date:"M d, Y" }} · {{ article.category|title }}
+                                        </small>
+                                    </div>
+                                </div>
+                                {% if article.author == user %}
+                                    <!-- additional links -->
+                                    <div class="d-flex align-items-center ms-lg-auto user-dropdown">
+                                        <div class="dropdown">
+                                            <a href="#" class="d-flex align-items-center gap-2 text-decoration-none"
+                                               data-bs-toggle="dropdown">
+                                                <i class="bi bi-three-dots text-muted"></i>
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                                                <li>
+                                                    <a class="dropdown-item"
+                                                       href="{% url 'edit_profile' user.pk %}">
+                                                        Edit article
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item" href="{% url 'password_change' %}">
+                                                        Delete article
+                                                    </a>
+                                                </li>
+                                            </ul>
                                         </div>
-                                    {% endif %}
-                                </div>
-
-                                <hr class="my-0">
-                                <!-- Body -->
-                                <div class="card-body">
-                                    <h5 class="fw-bold mb-2">
-                                        {{ article.title }}
-                                    </h5>
-
-                                    <p class="text-muted mb-3">
-                                        {{ article.content|striptags|truncatewords:45 }}
-                                    </p>
-
-                                    {% if article.image %}
-                                        <img src="{{ article.image.url }}"
-                                             class="article-image mb-3"
-                                             alt="{{ article.title }}">
-                                    {% endif %}
-                                </div>
-                                <!-- Footer -->
-                                <div class="card-footer bg-white border-0">
-                                    <a href="{% url 'article_detail' article.pk %}"
-                                       class="text-decoration-none fw-semibold">
-                                        Read more →
-                                    </a>
-                                </div>
-                            </div>
-                        {% endfor %}
-                </main>
-
-                <!-- RIGHT SIDEBAR -->
-                <aside class="col-lg-4 d-none d-lg-block">
-                    <div class="sticky-top" style="top: 90px;">
-
-                        <!-- Section title -->
-                        <div class="d-flex align-items-center mb-3">
-                            <h6 class="fw-bold text-uppercase mb-0">Trending Articles</h6>
-                            <div class="flex-grow-1 ms-3 border-bottom"></div>
-                        </div>
-
-                        <!-- cards -->
-                        <div class="card trending-card mb-3 border-0">
-                            <div class="card-body p-3">
-
-                                <!-- Author -->
-                                <div class="d-flex align-items-center mb-3">
-                                    <img src="{% static 'images/default-avatar.png' %}"
-                                         class="rounded-circle me-3"
-                                         width="40"
-                                         height="40"
-                                         alt="Author">
-
-                                    <div>
-                                        <div class="fw-semibold small">Nigel Nk</div>
-                                        <div class="text-muted small">Programmer</div>
                                     </div>
-                                </div>
+                                {% endif %}
+                            </div>
 
-                                <!-- title -->
-                                <a href="#" class="trending-title d-block mb-2">
-                                    Vibe Coding Explained
+                            <hr class="my-0" >
+
+                            <!-- Body -->
+                            <div class="card-body">
+                                <h5 class="fw-bold mb-2">
+                                    {{ article.title }}
+                                </h5>
+
+                                <p class="text-muted mb-3">
+                                    {{ article.content|striptags|truncatewords:45 }}
+                                </p>
+
+                                {% if article.image %}
+                                    <img src="{{ article.image.url }}"
+                                         class="article-image mb-3"
+                                         alt="{{ article.title }}">
+                                {% endif %}
+                            </div>
+
+                            <!-- Footer -->
+                            <div class="card-footer bg-white border-0">
+                                <a href="#" class="text-decoration-none fw-semibold">
+                                    Read more →
                                 </a>
-
-                                <!-- views and likes -->
-                                <div class="d-flex align-items-center text-muted small">
-                                        <span class="me-3">
-                                            <i class="bi bi-eye me-1"></i>1.2k
-                                        </span>
-                                    <span>
-                                            <i class="bi bi-heart me-1"></i>320
-                                        </span>
-                                </div>
                             </div>
                         </div>
-                        <div class="card trending-card mb-3 border-0">
-                            <div class="card-body p-3">
+                    {% endfor %}
+                    <!--paginated-->
+                    <nav aria-label="Page navigation" class="mt-4">
+                        <ul class="pagination justify-content-center flex-wrap gap-1">
 
-                                <!-- Author -->
-                                <div class="d-flex align-items-center mb-3">
-                                    <img src="{% static 'images/default-avatar.png' %}"
-                                         class="rounded-circle me-3"
-                                         width="40"
-                                         height="40"
-                                         alt="Author">
+                            <!-- Previous -->
+                            {% if is_paginated %}
+                                <nav class="mt-5">
+                                    <ul class="pagination justify-content-center align-items-center gap-1">
 
-                                    <div>
-                                        <div class="fw-semibold small">Nigel Nk</div>
-                                        <div class="text-muted small">Programmer</div>
-                                    </div>
-                                </div>
+                                        <!-- Previous -->
+                                        <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
+                                            <a class="page-link rounded-pill px-3"
+                                               href="{% if page_obj.has_previous %}?page=
+                                                   {{ page_obj.previous_page_number }}{% else %}#{% endif %}">
+                                                <i class="bi bi-chevron-left"></i>
+                                            </a>
+                                        </li>
 
-                                <!-- title -->
-                                <a href="#" class="trending-title d-block mb-2">
-                                    Vibe Coding Explained
-                                </a>
+                                        <!-- Page Numbers (windowed) -->
+                                        {% for num in paginator.page_range %}
+                                            {% if num >= page_obj.number|add:'-2' and num <= page_obj.number|add:'2' %}
+                                                {% if page_obj.number == num %}
+                                                    <li class="page-item active">
+                                                    <span class="page-link rounded-pill px-3">
+                                                        {{ num }}
+                                                    </span>
+                                                    </li>
+                                                {% else %}
+                                                    <li class="page-item">
+                                                        <a class="page-link rounded-pill px-3"
+                                                           href="?page={{ num }}">
+                                                            {{ num }}
+                                                        </a>
+                                                    </li>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endfor %}
 
-                                <!-- views and likes -->
-                                <div class="d-flex align-items-center text-muted small">
-                                        <span class="me-3">
-                                            <i class="bi bi-eye me-1"></i>1.2k
-                                        </span>
-                                    <span>
-                                            <i class="bi bi-heart me-1"></i>320
-                                        </span>
+                                        <!-- Next -->
+                                        <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
+                                            <a class="page-link rounded-pill px-3"
+                                               href="{% if page_obj.has_next %}?page=
+                                                   {{ page_obj.next_page_number }}{% else %}#{% endif %}">
+                                                <i class="bi bi-chevron-right"></i>
+                                            </a>
+                                        </li>
+
+                                    </ul>
+                                </nav>
+                            {% endif %}
+
+                </div>
+            </main>
+
+
+            <!-- RIGHT SIDEBAR -->
+            <aside class="col-lg-4 d-none d-lg-block">
+                <div class="sticky-top" style="top: 90px;">
+
+                    <!-- Section title -->
+                    <div class="d-flex align-items-center mb-3">
+                        <h6 class="fw-bold text-uppercase mb-0">Trending Articles</h6>
+                        <div class="flex-grow-1 ms-3 border-bottom"></div>
+                    </div>
+
+                    <!-- cards -->
+                    <div class="card trending-card mb-3 border-0">
+                        <div class="card-body p-3">
+
+                            <!-- Author -->
+                            <div class="d-flex align-items-center mb-3">
+                                <img src="{% static 'images/default-avatar.png' %}"
+                                     class="rounded-circle me-3"
+                                     width="40"
+                                     height="40"
+                                     alt="Author">
+
+                                <div>
+                                    <div class="fw-semibold small">Nigel Nk</div>
+                                    <div class="text-muted small">Programmer</div>
                                 </div>
                             </div>
-                        </div>
-                        <!--cards-->
-                        <div class="card trending-card mb-3 border-0">
-                            <div class="card-body p-3">
-                                <!-- Author -->
-                                <div class="d-flex align-items-center mb-3">
-                                    <img src="{% static 'images/default-avatar.png' %}"
-                                         class="rounded-circle me-3"
-                                         width="40"
-                                         height="40"
-                                         alt="Author">
 
-                                    <div>
-                                        <div class="fw-semibold small">Nigel Nk</div>
-                                        <div class="text-muted small">Programmer</div>
-                                    </div>
-                                </div>
+                            <!-- title -->
+                            <a href="#" class="trending-title d-block mb-2">
+                                Vibe Coding Explained
+                            </a>
 
-                                <!-- title -->
-                                <a href="#" class="trending-title d-block mb-2">
-                                    Vibe Coding Explained
-                                </a>
-
-                                <!-- views and likes -->
-                                <div class="d-flex align-items-center text-muted small">
-                                        <span class="me-3">
-                                            <i class="bi bi-eye me-1"></i>1.2k
-                                        </span>
-                                    <span>
-                                            <i class="bi bi-heart me-1"></i>320
-                                        </span>
-                                </div>
+                            <!-- views and likes -->
+                            <div class="d-flex align-items-center text-muted small">
+                                <span class="me-3">
+                                    <i class="bi bi-eye me-1"></i>1.2k
+                                </span>
+                                <span>
+                                    <i class="bi bi-heart me-1"></i>320
+                                </span>
                             </div>
                         </div>
                     </div>
-                </aside>
-            </div>
+                    <div class="card trending-card mb-3 border-0">
+                        <div class="card-body p-3">
+
+                            <!-- Author -->
+                            <div class="d-flex align-items-center mb-3">
+                                <img src="{% static 'images/default-avatar.png' %}"
+                                     class="rounded-circle me-3"
+                                     width="40"
+                                     height="40"
+                                     alt="Author">
+
+                                <div>
+                                    <div class="fw-semibold small">Nigel Nk</div>
+                                    <div class="text-muted small">Programmer</div>
+                                </div>
+                            </div>
+
+                            <!-- title -->
+                            <a href="#" class="trending-title d-block mb-2">
+                                Vibe Coding Explained
+                            </a>
+
+                            <!-- views and likes -->
+                            <div class="d-flex align-items-center text-muted small">
+                                <span class="me-3">
+                                    <i class="bi bi-eye me-1"></i>1.2k
+                                </span>
+                                <span>
+                                    <i class="bi bi-heart me-1"></i>320
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <!--cards-->
+                    <div class="card trending-card mb-3 border-0">
+                        <div class="card-body p-3">
+                            <!-- Author -->
+                            <div class="d-flex align-items-center mb-3">
+                                <img src="{% static 'images/default-avatar.png' %}"
+                                     class="rounded-circle me-3"
+                                     width="40"
+                                     height="40"
+                                     alt="Author">
+
+                                <div>
+                                    <div class="fw-semibold small">Nigel Nk</div>
+                                    <div class="text-muted small">Programmer</div>
+                                </div>
+                            </div>
+
+                            <!-- title -->
+                            <a href="#" class="trending-title d-block mb-2">
+                                Vibe Coding Explained
+                            </a>
+
+                            <!-- views and likes -->
+                            <div class="d-flex align-items-center text-muted small">
+                                <span class="me-3">
+                                    <i class="bi bi-eye me-1"></i>1.2k
+                                </span>
+                                <span>
+                                    <i class="bi bi-heart me-1"></i>320
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
         </div>
-    {% endif %}
+{% endif %}
 
 {% endblock %}

@@ -92,8 +92,38 @@
             pointer-events: none;
         }
 
+        @media (max-width: 576px) {
+            .card-header {
+                padding: 0.75rem 1rem;
+            }
+
+            .profile-picture {
+                width: 45px;
+                height: 45px;
+            }
+
+            .additional-link {
+                padding-right: 0;
+            }
+
+            .article-image {
+                max-height: 220px;
+                border-radius: 8px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .card-body h5 {
+                font-size: 1.05rem;
+            }
+
+            .card-body p {
+                font-size: 0.9rem;
+            }
+        }
 
     </style>
+
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom py-3">
             <div class="container-fluid">
@@ -169,7 +199,7 @@
     </header>
 
     <!-- MAIN FEED LAYOUT -->
-    <div class="container-fluid px-5 mt-4">
+    <div class="container-fluid px-2 px-sm-3 px-md-4 px-lg-5 mt-4">
         <div class="row g-4">
 
             <!-- CENTER CONTENT -->
@@ -177,8 +207,8 @@
                 <!-- Search Form -->
                 <div class="container-fluid px-2 px-md-4 px-xxl-5 mt-4 mb-5">
                     <div class="row justify-content-center">
-                        <div class="col-md-12 col-lg-8 mb-4">
-                            <form class="d-flex shadow-sm rounded-pill overflow-hidden">
+                        <div class="col-12 col-md-10 col-lg-8 mb-4">
+                            <form class="d-flex w-100 shadow-sm rounded-pill overflow-hidden">
                                 <input class="form-control border-0 px-4 py-2" type="search"
                                        placeholder="Search articles, authors, topics..." aria-label="Search">
                                 <button class="btn btn-primary px-4" type="submit">
@@ -187,7 +217,7 @@
                             </form>
                         </div>
                     </div>
-                    <div class="mb-3" style="max-width: 260px;">
+                    <div class="mb-3 w-100 w-md-auto" style="max-width: 260px;">
                         <label for="category" class="form-label fw-semibold text-muted">
                             Category
                         </label>
@@ -205,7 +235,7 @@
                         <!-- Cards -->
                         <div class="card shadow-sm mb-4">
 
-                            <div class="d-flex justify-content-between align-items-center additional-link">
+                            <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center additional-link">
                                 <!-- Header -->
                                 <div class="card-header bg-white border-0 d-flex align-items-center">
                                     {% if article.author.profile.image_url %}
@@ -266,7 +296,7 @@
                                 {% endif %}
                             </div>
 
-                            <hr class="my-0">
+                            <hr class="my-0" >
 
                             <!-- Body -->
                             <div class="card-body">
@@ -295,7 +325,7 @@
                     {% endfor %}
                     <!--paginated-->
                     <nav aria-label="Page navigation" class="mt-4">
-                        <ul class="pagination justify-content-center">
+                        <ul class="pagination justify-content-center flex-wrap gap-1">
 
                             <!-- Previous -->
                             {% if is_paginated %}
@@ -461,8 +491,6 @@
                 </div>
             </aside>
         </div>
-    </div>
-
     </div>
 
 {% endblock %}

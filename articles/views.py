@@ -12,7 +12,7 @@ class CreateArticle(LoginRequiredMixin, CreateView):
     template_name = 'articles/create_article.html'
     context_object_name = 'article'
     login_url = reverse_lazy('login')
-    success_url = reverse_lazy('articles')
+    success_url = reverse_lazy('personal_articles')
 
     def form_valid(self, form):
         form.instance.author = self.request.user
