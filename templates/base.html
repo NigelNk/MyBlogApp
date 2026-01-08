@@ -14,11 +14,13 @@
 </head>
 <body>
 
+{% if user.is_authenticated %}
+    {% include 'pages/header/header.html' %}
+{% endif %}
 
-{% block content %}
-
-{% endblock %}
-
+<main>
+    {% block content %}{% endblock %}
+</main>
 
 <div class="container">
     {% include 'footer/footer.html' %}

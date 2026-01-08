@@ -17,6 +17,12 @@
             margin-right: 8px;
         }
 
+        .navbar {
+            position: relative;
+            z-index: 1055;
+        }
+
+
         /* Center nav links on desktop */
         @media (min-width: 992px) {
             .navbar-center {
@@ -103,9 +109,6 @@
     </style>
 
     {% if user.is_authenticated %}
-
-        {% include 'pages/header/header.html' %}
-
         <!-- MAIN FEED LAYOUT -->
         <div class="container-fluid px-5 mt-4">
             <div class="row g-4">
