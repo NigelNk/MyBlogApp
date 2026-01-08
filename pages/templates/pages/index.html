@@ -286,7 +286,8 @@
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a class="dropdown-item" href="{% url 'article_delete' article.pk %}">
+                                                    <a class="dropdown-item"
+                                                       href="{% url 'article_delete' article.pk %}">
                                                         Delete article
                                                     </a>
                                                 </li>
@@ -296,7 +297,7 @@
                                 {% endif %}
                             </div>
 
-                            <hr class="my-0" >
+                            <hr class="my-0">
 
                             <!-- Body -->
                             <div class="card-body">
@@ -317,6 +318,18 @@
 
                             <!-- Footer -->
                             <div class="card-footer bg-white border-0">
+                                <!-- views and likes -->
+                                <div class="d-flex align-items-center text-muted small mb-2">
+                                    <span class="me-3">
+                                        <i class="bi bi-eye me-1"></i>1.2k
+                                    </span>
+                                    <span class="me-3">
+                                        <i class="bi bi-heart me-1"></i>320
+                                    </span>
+                                    <span>
+                                        <i class="bi bi-chat-dots"></i>40
+                                    </span>
+                                </div>
                                 <a href="#" class="text-decoration-none fw-semibold">
                                     Read more →
                                 </a>
