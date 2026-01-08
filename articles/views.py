@@ -18,11 +18,6 @@ class CreateArticle(LoginRequiredMixin, CreateView):
         form.instance.author = self.request.user
         return  super().form_valid(form)
 
-class ArticleView(LoginRequiredMixin, ListView):
-    model = Article
-    context_object_name = 'articles'
-    template_name = 'articles/articles.html'
-    login_url = reverse_lazy('login')
 
 class PersonalArticleView(LoginRequiredMixin, ListView):
     model = Article
