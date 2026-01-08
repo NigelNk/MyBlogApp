@@ -157,27 +157,29 @@
                                         </small>
                                     </div>
                                 </div>
-
-                                <div class="d-flex align-items-center ms-lg-auto user-dropdown">
-                                    <div class="dropdown">
-                                        <a href="#" class="d-flex align-items-center gap-2 text-decoration-none"
-                                           data-bs-toggle="dropdown">
-                                            <i class="bi bi-three-dots text-muted"></i>
-                                        </a>
-                                        <ul class="dropdown-menu dropdown-menu-end shadow-sm">
-                                            <li>
-                                                <a class="dropdown-item" href="{% url 'edit_profile' user.pk %}">
-                                                    Edit article
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a class="dropdown-item" href="{% url 'article_delete' article.pk %}">
-                                                    Delete article
-                                                </a>
-                                            </li>
-                                        </ul>
+                                {% if article.author == user %}
+                                    <div class="d-flex align-items-center ms-lg-auto user-dropdown">
+                                        <div class="dropdown">
+                                            <a href="#" class="d-flex align-items-center gap-2 text-decoration-none"
+                                               data-bs-toggle="dropdown">
+                                                <i class="bi bi-three-dots text-muted"></i>
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                                                <li>
+                                                    <a class="dropdown-item" href="{% url 'edit_profile' user.pk %}">
+                                                        Edit article
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item"
+                                                       href="{% url 'article_delete' article.pk %}">
+                                                        Delete article
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
-                                </div>
+                                {% endif %}
                             </div>
                             <hr>
 
