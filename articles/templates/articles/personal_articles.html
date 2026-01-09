@@ -91,7 +91,11 @@
                                         </small>
                                         <br/>
                                         <small class="text-muted">
-                                            {{ article.created_at|date:"M d, Y" }} · {{ article.category|title }}
+                                            {{ article.created_at }}
+                                            {% if article.created_at|date:'Y-m-d H:i' != article.updated_at|date:'Y-m-d H:i' %}
+                                                ,
+                                                (edited on {{ article.updated_at }}) . {{ article.category|title }}
+                                            {% endif %}
                                         </small>
                                     </div>
                                 </div>
@@ -104,7 +108,7 @@
                                         </a>
                                         <ul class="dropdown-menu dropdown-menu-end shadow-sm">
                                             <li>
-                                                <a class="dropdown-item" href="{% url 'edit_profile' user.pk %}">
+                                                <a class="dropdown-item" href="{% url 'article_edit' article.pk %}">
                                                     Edit article
                                                 </a>
                                             </li>
@@ -149,7 +153,8 @@
                                         <i class="bi bi-chat-dots me-1"></i>40
                                     </span>
                                 </div>
-                                <a href="{% url 'article_detail' article.pk %}" class="text-decoration-none read-more-link">
+                                <a href="{% url 'article_detail' article.pk %}"
+                                   class="text-decoration-none read-more-link">
                                     Read more →
                                 </a>
                             </div>

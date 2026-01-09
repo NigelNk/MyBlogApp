@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DetailView, ListView, DeleteView
+from django.views.generic import CreateView, DetailView, ListView, DeleteView, UpdateView
 
 from .forms import ArticleForm
 from .models import Article
@@ -56,4 +56,23 @@ class ArticleDeleteView(LoginRequiredMixin, DeleteView):
 
     def form_valid(self, form):
         messages.success(self.request, 'Article deleted successfully')
+        return super().form_valid(form)
+
+
+class ArticleEditView(LoginRequiredMixin, UpdateView):
+    form_class = ArticleForm
+    model = Article
+    template_name = 'articles/article_edit.html'
+    context_object_name = 'article'
+    success_url = reverse_lazy('personal_articles')
+    login_url = reverse_lazy('login')
+
+    def dispatch(self, request, *args, **kwargs):
+        obj = self.get_object()
+        if obj.author != self.request.user:
+            raise PermissionDenied
+        return super().dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        messages.success(self.request, 'Article updated successfully')
         return super().form_valid(form)
