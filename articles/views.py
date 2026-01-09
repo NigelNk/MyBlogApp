@@ -74,5 +74,6 @@ class ArticleEditView(LoginRequiredMixin, UpdateView):
         return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
+        form.instance.edited = True
         messages.success(self.request, 'Article updated successfully')
         return super().form_valid(form)

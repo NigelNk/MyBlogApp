@@ -1,10 +1,49 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}Update Article{% endblock %}
+
+{% block content %}
+    <div class="container my-2">
+        <div class="row justify-content-center">
+            <div class="col-lg-12">
+                <h1 class="fw-bold mb-4">Edit Article</h1>
+
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.media }}
+
+                    <!-- Title -->
+                    <div class="form-floating mb-4">
+                        {{ form.title }}
+                        <label for="{{ form.title.id_for_label }}">Article Title</label>
+                        {{ form.title.errors }}
+                    </div>
+
+                    <!-- Category -->
+                    <div class="form-floating mb-4">
+                        {{ form.category }}
+                        <label for="{{ form.category.id_for_label }}">Category</label>
+                        {{ form.category.errors }}
+                    </div>
+
+                    <!-- Content -->
+                    <div class="mb-4">
+                        {{ form.content }}
+                        {{ form.content.errors }}
+                    </div>
+
+                    <!-- Image -->
+                    <div class="mb-4">
+                        {{ form.image.label_tag }}
+                        {{ form.image }}
+                        {{ form.image.errors }}
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        Update
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

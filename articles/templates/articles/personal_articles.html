@@ -92,12 +92,11 @@
                                         <br/>
                                         <small class="text-muted">
                                             {{ article.created_at|date:"M d, Y H:i" }}
-                                            {% if article.is_edited %}
+                                            {% if article.edited %}
                                                 , (edited on {{ article.updated_at|date:"M d, Y H:i" }})
                                             {% endif %}
                                             . {{ article.category|title }}
                                         </small>
-
                                     </div>
                                 </div>
 

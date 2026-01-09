@@ -3,12 +3,19 @@ from django import forms
 from .models import Article
 
 ALLOWED_TAGS = [
-    'a', 'p', 'br', 'strong', 'em',
-    'h1', 'h2', 'h3', 'h4', 'h5', 'h6'
+    'a', 'p', 'br',
+    'strong', 'b', 'em', 'i', 'u',
+    'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+    'ul', 'ol', 'li',
+    'blockquote',
+    'span',
+    'img',
 ]
 
 ALLOWED_ATTRIBUTES = {
-    'a': ['href', 'title', 'target']
+    '*': ['style'],
+    'a': ['href', 'title', 'target'],
+    'img': ['src', 'alt'],
 }
 
 class ArticleForm(forms.ModelForm):
@@ -35,5 +42,5 @@ class ArticleForm(forms.ModelForm):
             content,
             tags=ALLOWED_TAGS,
             attributes=ALLOWED_ATTRIBUTES,
-            strip=True
+            strip=False
         )
