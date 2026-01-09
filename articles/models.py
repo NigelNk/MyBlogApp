@@ -22,3 +22,7 @@ class Article(models.Model):
 
     def __str__(self):
         return self.title
+
+    @property
+    def is_edited(self):
+        return self.updated_at > self.created_at

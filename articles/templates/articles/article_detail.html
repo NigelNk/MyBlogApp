@@ -70,10 +70,11 @@
                                 </small>
                                 <br/>
                                 <small class="text-muted">
-                                    {{ article.created_at }}
-                                    {% if article.created_at|date:'Y-m-d H:i' != article.updated_at|date:'Y-m-d H:i' %},
-                                        (edited on {{ article.updated_at }}) . {{ article.category|title }}
+                                    {{ article.created_at|date:"M d, Y H:i" }}
+                                    {% if article.edited %}
+                                        , (edited on {{ article.updated_at|date:"M d, Y H:i" }})
                                     {% endif %}
+                                    . {{ article.category|title }}
                                 </small>
                             </div>
                         </div>
@@ -91,8 +92,9 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="{% url 'article_delete' article.pk %}">Delete
-                                            article</a>
+                                        <a class="dropdown-item" href="{% url 'article_delete' article.pk %}">
+                                            Delete article
+                                        </a>
                                     </li>
                                 </ul>
                             </div>
@@ -107,7 +109,7 @@
                         </h4>
 
                         <div class="article-content text-muted">
-                            {{ article.content|striptags }}
+                            {{ article.content|safe }}
                         </div>
 
                         {% if article.image %}
