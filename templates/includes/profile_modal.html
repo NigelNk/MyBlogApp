@@ -3,15 +3,20 @@
         <div class="modal-dialog modal-dialog-centered modal-md">
             <div class="modal-content border-0 shadow">
 
-                <!-- Header -->
+                <!-- header -->
                 <div class="modal-header border-0">
-                    <h5 class="modal-title fw-semibold">
-                        {{ article.author.profile.get_full_name|default:article.author.username }}
-                    </h5>
+                    <div>
+                        <h5 class="modal-title fw-semibold">
+                            {{ article.author.profile.get_full_name|default:article.author.username }}
+                        </h5>
+                        <span>
+                        <a href="#" class="text-decoration-none text-primary">View articles</a>
+                    </span>
+                    </div>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+
                 </div>
 
-                <!-- Body -->
                 <div class="modal-body text-center px-4">
 
                     <!-- Profile Image -->
@@ -64,11 +69,8 @@
                                 <i class="bi bi-linkedin fs-5"></i>
                             </a>
                         {% endif %}
-
                     </div>
-
                 </div>
-
             </div>
         </div>
     </div>
