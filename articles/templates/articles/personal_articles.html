@@ -129,14 +129,13 @@
                                     {{ article.title }}
                                 </h5>
                                 <p class="article-excerpt text-muted mb-2">
-                                    {{ article.content|striptags|truncatewords:45 }}
+                                    {{ article.content|safe|truncatewords:45 }}
                                 </p>
                                 {% if article.image %}
                                     <img src="{{ article.image.url }}"
                                          class="article-image mb-3"
                                          alt="{{ article.title }}">
                                 {% endif %}
-
                             </div>
 
                             <!-- Footer -->
@@ -158,7 +157,6 @@
                                     Read more →
                                 </a>
                             </div>
-
                         </div>
                     {% endif %}
                 {% empty %}
