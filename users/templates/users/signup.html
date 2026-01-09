@@ -26,6 +26,9 @@
                                    name="username"
                                    placeholder="Choose a username"
                                    required>
+                            {% if form.username.errors %}
+                                <div class="text-danger small">{{ form.username.errors }}</div>
+                            {% endif %}
                         </div>
 
                         <div class="mb-3">
@@ -36,6 +39,9 @@
                                    name="email"
                                    placeholder="Enter your email"
                                    required>
+                            {% if form.email.errors %}
+                                <div class="text-danger small">{{ form.email.errors }}</div>
+                            {% endif %}
                         </div>
 
                         <div class="mb-3">
@@ -46,6 +52,9 @@
                                    name="password1"
                                    placeholder="Create a password"
                                    required>
+                            {% if form.password1.errors %}
+                                <div class="text-danger small">{{ form.password1.errors }}</div>
+                            {% endif %}
                         </div>
 
                         <div class="mb-4">
@@ -56,6 +65,9 @@
                                    name="password2"
                                    placeholder="Re-enter your password"
                                    required>
+                            {% if form.password2.errors %}
+                                <div class="text-danger small">{{ form.password2.errors }}</div>
+                            {% endif %}
                         </div>
 
                         <div class="d-grid">
