@@ -21,8 +21,17 @@ class DashboardView(LoginRequiredMixin, ListView):
     template_name = 'pages/dashboard.html'
     login_url = reverse_lazy('login')
 
-    ordering = ['created_at']
+    ordering = ['-created_at']
     paginate_by = 3
+
+    def get_queryset(self):
+        queryset = super().get_queryset().order_by('-created_at')
+        category = self.request.GET.get('category')
+
+        if category and category != 'all':
+            queryset = queryset.filter(category=category)
+
+        return queryset
 
 
 class EditUserProfileView(LoginRequiredMixin, UpdateView):

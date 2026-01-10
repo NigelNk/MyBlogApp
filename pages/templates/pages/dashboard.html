@@ -101,19 +101,32 @@
                             </form>
                         </div>
                     </div>
-                    <div class="mb-3 w-100 w-md-auto" style="max-width: 260px;">
+                    <form method="get" class="mb-3 w-100 w-md-auto" style="max-width: 260px;">
                         <label for="category" class="form-label fw-semibold text-muted">
                             Category
                         </label>
-                        <select id="category" name="category" class="form-select shadow-sm">
-                            <option value="all" selected>All</option>
-                            <option value="health">Health</option>
-                            <option value="science">Science</option>
-                            <option value="technology">Technology</option>
-                            <option value="politics">Politics</option>
-                            <option value="business">Business</option>
+                        <select id="category"
+                                name="category"
+                                class="form-select shadow-sm"
+                                onchange="this.form.submit()">
+                            <option value="all">All</option>
+                            <option value="health" {% if request.GET.category == "health" %}selected{% endif %}>Health
+                            </option>
+                            <option value="science" {% if request.GET.category == "science" %}selected{% endif %}>
+                                Science
+                            </option>
+                            <option value="technology" {% if request.GET.category == "technology" %}selected{% endif %}>
+                                Technology
+                            </option>
+                            <option value="politics" {% if request.GET.category == "politics" %}selected{% endif %}>
+                                Politics
+                            </option>
+                            <option value="business" {% if request.GET.category == "business" %}selected{% endif %}>
+                                Business
+                            </option>
                         </select>
-                    </div>
+                    </form>
+
 
                     {% for article in articles %}
                         <!-- Cards -->
@@ -224,54 +237,51 @@
 
                         </div>
                     {% endfor %}
-                    <!--paginated-->
-                    <nav aria-label="Page navigation" class="mt-4">
-                        <ul class="pagination justify-content-center flex-wrap gap-1">
-                            <!-- Previous -->
-                            {% if is_paginated %}
-                                <nav class="mt-5">
-                                    <ul class="pagination justify-content-center align-items-center gap-1">
+                    {% if is_paginated %}
+                        <nav class="mt-5">
+                            <ul class="pagination justify-content-center align-items-center gap-1">
 
-                                        <!-- Previous -->
-                                        <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
-                                            <a class="page-link rounded-pill px-3"
-                                               href="{% if page_obj.has_previous %}?page=
-                                                   {{ page_obj.previous_page_number }}{% else %}#{% endif %}">
-                                                <i class="bi bi-chevron-left"></i>
-                                            </a>
-                                        </li>
+                                <!-- Previous -->
+                                <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
+                                    <a class="page-link rounded-pill px-3"
+                                       href="{% if page_obj.has_previous %}?page={{ page_obj.previous_page_number }}&category=
+                                           {{ request.GET.category }}{% else %}#{% endif %}">
+                                        <i class="bi bi-chevron-left"></i>
+                                    </a>
+                                </li>
 
-                                        <!-- Page Numbers (windowed) -->
-                                        {% for num in paginator.page_range %}
-                                            {% if num >= page_obj.number|add:'-2' and num <= page_obj.number|add:'2' %}
-                                                {% if page_obj.number == num %}
-                                                    <li class="page-item active">
-                                                        <span class="page-link rounded-pill px-3">
-                                                            {{ num }}
-                                                        </span>
-                                                    </li>
-                                                {% else %}
-                                                    <li class="page-item">
-                                                        <a class="page-link rounded-pill px-3"
-                                                           href="?page={{ num }}">
-                                                            {{ num }}
-                                                        </a>
-                                                    </li>
-                                                {% endif %}
-                                            {% endif %}
-                                        {% endfor %}
+                                <!-- Page Numbers -->
+                                {% for num in paginator.page_range %}
+                                    {% if num >= page_obj.number|add:'-2' and num <= page_obj.number|add:'2' %}
+                                        {% if page_obj.number == num %}
+                                            <li class="page-item active">
+                                                <span class="page-link rounded-pill px-3">
+                                                    {{ num }}
+                                                </span>
+                                            </li>
+                                        {% else %}
+                                            <li class="page-item">
+                                                <a class="page-link rounded-pill px-3"
+                                                   href="?page={{ num }}&category={{ request.GET.category }}">
+                                                    {{ num }}
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
 
-                                        <!-- Next -->
-                                        <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
-                                            <a class="page-link rounded-pill px-3"
-                                               href="{% if page_obj.has_next %}?page=
-                                                   {{ page_obj.next_page_number }}{% else %}#{% endif %}">
-                                                <i class="bi bi-chevron-right"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </nav>
-                            {% endif %}
+                                <!-- Next -->
+                                <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
+                                    <a class="page-link rounded-pill px-3"
+                                       href="{% if page_obj.has_next %}?page={{ page_obj.next_page_number }}&category=
+                                           {{ request.GET.category }}{% else %}#{% endif %}">
+                                        <i class="bi bi-chevron-right"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    {% endif %}
+
                 </div>
             </main>
 
