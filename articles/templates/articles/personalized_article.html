@@ -1,0 +1,222 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ author.username }} - Articles{% endblock %}
+
+{% block content %}
+
+    <style>
+        /* Author Header */
+        .author-header {
+            background: #fff;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .author-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #0d6efd;
+        }
+
+        .author-info h4 {
+            margin: 0;
+            font-weight: 700;
+        }
+
+        .author-info p {
+            margin: 0.2rem 0;
+            color: #6c757d;
+            font-size: 0.95rem;
+        }
+
+        .follow-btn {
+            background-color: #0d6efd;
+            color: #fff;
+            border-radius: 50px;
+            padding: 0.5rem 1.2rem;
+            font-weight: 500;
+            transition: background 0.2s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .follow-btn:hover {
+            background-color: #0b5ed7;
+        }
+
+        /* Article Cards */
+        .article-card {
+            border-radius: 14px;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            overflow: hidden;
+            border: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            background: #fff;
+        }
+
+        .article-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, .08);
+        }
+
+        .article-image {
+            width: 100%;
+            max-height: 380px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .article-excerpt {
+            line-height: 1.6;
+            font-size: 0.95rem;
+            color: #495057;
+        }
+
+        .read-more-link {
+            font-weight: 500;
+            color: #0d6efd;
+            text-decoration: none;
+        }
+
+        .read-more-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+
+    <div class="container my-4">
+
+        <!-- ===== Author Header ===== -->
+        <div class="author-header sticky-top">
+            {% if author.profile.image_url %}
+                <img src="{{ author.profile.image_url.url }}" alt="{{ author.username }}" class="author-avatar">
+            {% else %}
+                <img src="{% static 'images/default-avatar.png' %}" alt="{{ author.username }}" class="author-avatar">
+            {% endif %}
+            <div class="author-info flex-grow-1">
+                <h4>{{ author.profile.get_full_name|default:author.username }}</h4>
+                {% if author.profile.short_bio %}
+                    <p>{{ author.profile.short_bio }}</p>
+                {% endif %}
+                <p>{{ paginator.count }} article{{ paginator.count|pluralize }}</p>
+            </div>
+            {% if request.user != author %}
+                <button class="follow-btn">Follow</button>
+            {% endif %}
+        </div>
+
+        <!-- ===== Articles List ===== -->
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-md-10">
+                {% for article in articles %}
+                    <div class="card mb-4 article-card">
+
+                        <!-- Header -->
+                        <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center">
+                                {% if article.author.profile.image_url %}
+                                    <img src="{{ article.author.profile.image_url.url }}"
+                                         class="rounded-circle me-3 profile-picture" width="60" height="60"
+                                         alt="Author">
+                                {% else %}
+                                    <img src="{% static 'images/default-avatar.png' %}"
+                                         class="rounded-circle me-3 profile-picture" width="60" height="60"
+                                         alt="Author">
+                                {% endif %}
+
+                                <div>
+                                    <h6 class="mb-0 fw-semibold">
+                                        <a href="#" class="text-decoration-none text-dark user-link"
+                                           data-bs-toggle="modal"
+                                           data-bs-target="#profileModal-{{ article.author.id }}">
+                                            {{ article.author.profile.get_full_name|default:article.author.username }}
+                                        </a>
+                                        {% include "includes/profile_modal.html" with author=article.author %}
+                                    </h6>
+                                    <small class="text-muted">{{ article.author.profile.short_bio }}</small>
+                                    <br/>
+                                    <small class="text-muted">
+                                        {{ article.created_at|date:"M d, Y H:i" }}
+                                        {% if article.edited %}, (edited on {{ article.updated_at|date:"M d, Y H:i" }}
+                                            ){% endif %}. {{ article.category|title }}
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <!-- Body -->
+                        <div class="card-body">
+                            <h5 class="fw-bold mb-2">{{ article.title }}</h5>
+                            <p class="article-excerpt text-muted mb-2">{{ article.content|safe|truncatewords:45 }}</p>
+                            {% if article.image %}
+                                <img src="{{ article.image.url }}" class="article-image mb-3" alt="{{ article.title }}">
+                            {% endif %}
+                        </div>
+
+                        <!-- Footer -->
+                        <div class="card-footer bg-white border-0 d-flex justify-content-between align-items-center">
+                            <div class="text-muted small">
+                                <span class="me-3"><i class="bi bi-eye me-1"></i>1.2k</span>
+                                <span class="me-3"><i class="bi bi-heart me-1"></i>320</span>
+                                <span><i class="bi bi-chat-dots me-1"></i>40</span>
+                            </div>
+                            <a href="{% url 'article_detail' article.pk %}" class="text-decoration-none read-more-link">Read
+                                more →</a>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="text-center text-muted mt-5">
+                        <i class="bi bi-journal-text fs-1 mb-3 d-block"></i>
+                        <p class="mb-1 fw-semibold">No articles yet</p>
+                        <small>{{ author.profile.get_full_name|default:author.username }} hasn’t published anything
+                            yet.</small>
+                    </div>
+                {% endfor %}
+
+                <!-- Pagination -->
+                {% if is_paginated %}
+                    <nav aria-label="Page navigation" class="mt-4">
+                        <ul class="pagination justify-content-center flex-wrap gap-1">
+                            <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
+                                <a class="page-link rounded-pill px-3" href="{% if page_obj.has_previous %}?page=
+                                    {{ page_obj.previous_page_number }}{% else %}#{% endif %}">
+                                    <i class="bi bi-chevron-left"></i>
+                                </a>
+                            </li>
+
+                            {% for num in paginator.page_range %}
+                                {% if num >= page_obj.number|add:'-2' and num <= page_obj.number|add:'2' %}
+                                    {% if page_obj.number == num %}
+                                        <li class="page-item active"><span
+                                                class="page-link rounded-pill px-3">{{ num }}</span></li>
+                                    {% else %}
+                                        <li class="page-item"><a class="page-link rounded-pill px-3"
+                                                                 href="?page={{ num }}">{{ num }}</a></li>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+
+                            <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
+                                <a class="page-link rounded-pill px-3" href="{% if page_obj.has_next %}?page=
+                                    {{ page_obj.next_page_number }}{% else %}#{% endif %}">
+                                    <i class="bi bi-chevron-right"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

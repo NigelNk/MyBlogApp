@@ -10,7 +10,7 @@
                             {{ article.author.profile.get_full_name|default:article.author.username }}
                         </h5>
                         <span>
-                        <a href="#" class="text-decoration-none text-primary">View articles</a>
+                        <a href="{% url 'personalized_articles' article.author.username %}" class="text-decoration-none text-primary">View articles</a>
                     </span>
                     </div>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
