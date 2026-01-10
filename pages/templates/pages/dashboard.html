@@ -243,11 +243,17 @@
 
                                 <!-- Previous -->
                                 <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
-                                    <a class="page-link rounded-pill px-3"
-                                       href="{% if page_obj.has_previous %}?page={{ page_obj.previous_page_number }}&category=
-                                           {{ request.GET.category }}{% else %}#{% endif %}">
-                                        <i class="bi bi-chevron-left"></i>
-                                    </a>
+                                    {% if page_obj.has_previous %}
+                                        <a class="page-link rounded-pill px-3"
+                                           href="?page=
+                                                   {{ page_obj.previous_page_number }}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
+                                            <i class="bi bi-chevron-left"></i>
+                                        </a>
+                                    {% else %}
+                                        <span class="page-link rounded-pill px-3">
+                                            <i class="bi bi-chevron-left"></i>
+                                        </span>
+                                    {% endif %}
                                 </li>
 
                                 <!-- Page Numbers -->
@@ -255,14 +261,13 @@
                                     {% if num >= page_obj.number|add:'-2' and num <= page_obj.number|add:'2' %}
                                         {% if page_obj.number == num %}
                                             <li class="page-item active">
-                                                <span class="page-link rounded-pill px-3">
-                                                    {{ num }}
-                                                </span>
+                                                <span class="page-link rounded-pill px-3">{{ num }}</span>
                                             </li>
                                         {% else %}
                                             <li class="page-item">
                                                 <a class="page-link rounded-pill px-3"
-                                                   href="?page={{ num }}&category={{ request.GET.category }}">
+                                                   href="?page=
+                                                           {{ num }}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
                                                     {{ num }}
                                                 </a>
                                             </li>
@@ -272,19 +277,23 @@
 
                                 <!-- Next -->
                                 <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
-                                    <a class="page-link rounded-pill px-3"
-                                       href="{% if page_obj.has_next %}?page={{ page_obj.next_page_number }}&category=
-                                           {{ request.GET.category }}{% else %}#{% endif %}">
-                                        <i class="bi bi-chevron-right"></i>
-                                    </a>
+                                    {% if page_obj.has_next %}
+                                        <a class="page-link rounded-pill px-3"
+                                           href="?page=
+                                                   {{ page_obj.next_page_number }}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
+                                            <i class="bi bi-chevron-right"></i>
+                                        </a>
+                                    {% else %}
+                                        <span class="page-link rounded-pill px-3">
+                                            <i class="bi bi-chevron-right"></i>
+                                        </span>
+                                    {% endif %}
                                 </li>
                             </ul>
                         </nav>
                     {% endif %}
-
                 </div>
             </main>
-
 
             <!-- RIGHT SIDEBAR -->
             <aside class="col-lg-4 d-none d-lg-block">
