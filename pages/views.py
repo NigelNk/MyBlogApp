@@ -11,8 +11,17 @@ class HomePageView(ListView):
     model = Article
     context_object_name = 'articles'
     template_name = "pages/index.html"
-    ordering = ['created_at']
+
     paginate_by = 3
+
+    def get_queryset(self):
+        queryset = super().get_queryset().order_by('-created_at')
+        category = self.request.GET.get('category')
+
+        if category and category != 'all':
+            queryset = queryset.filter(category=category)
+
+        return queryset
 
 
 class DashboardView(LoginRequiredMixin, ListView):

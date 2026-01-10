@@ -183,6 +183,7 @@
         <div class="row g-4">
 
             <!-- CENTER CONTENT -->
+            <!-- CENTER CONTENT -->
             <main class="col-lg-8 col-md-12">
                 <!-- Search Form -->
                 <div class="container-fluid px-2 px-md-4 px-xxl-5 mt-4 mb-5">
@@ -197,27 +198,40 @@
                             </form>
                         </div>
                     </div>
-                    <div class="mb-3 w-100 w-md-auto" style="max-width: 260px;">
+                    <form method="get" class="mb-3 w-100 w-md-auto" style="max-width: 260px;">
                         <label for="category" class="form-label fw-semibold text-muted">
                             Category
                         </label>
-                        <select id="category" name="category" class="form-select shadow-sm">
-                            <option value="all" selected>All</option>
-                            <option value="health">Health</option>
-                            <option value="science">Science</option>
-                            <option value="technology">Technology</option>
-                            <option value="politics">Politics</option>
-                            <option value="business">Business</option>
+                        <select id="category"
+                                name="category"
+                                class="form-select shadow-sm"
+                                onchange="this.form.submit()">
+                            <option value="all">All</option>
+                            <option value="health" {% if request.GET.category == "health" %}selected{% endif %}>Health
+                            </option>
+                            <option value="science" {% if request.GET.category == "science" %}selected{% endif %}>
+                                Science
+                            </option>
+                            <option value="technology" {% if request.GET.category == "technology" %}selected{% endif %}>
+                                Technology
+                            </option>
+                            <option value="politics" {% if request.GET.category == "politics" %}selected{% endif %}>
+                                Politics
+                            </option>
+                            <option value="business" {% if request.GET.category == "business" %}selected{% endif %}>
+                                Business
+                            </option>
                         </select>
-                    </div>
+                    </form>
+
 
                     {% for article in articles %}
                         <!-- Cards -->
-                        <div class="card shadow-sm mb-4">
+                        <div class="card shadow-sm mb-4 article-card">
 
-                            <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center additional-link">
-                                <!-- Header -->
-                                <div class="card-header bg-white border-0 d-flex align-items-center">
+                            <!-- Header -->
+                            <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center">
                                     {% if article.author.profile.image_url %}
                                         <img src="{{ article.author.profile.image_url.url }}"
                                              class="rounded-circle me-3 profile-picture"
@@ -244,7 +258,10 @@
                                                 {% include "includes/profile_modal.html" with author=article.author %}
                                             {% endif %}
                                         </h6>
-                                        <small class="text-muted">{{ article.author.profile.short_bio }}</small><br>
+                                        <small class="text-muted">
+                                            {{ article.author.profile.short_bio }}
+                                        </small>
+                                        <br/>
                                         <small class="text-muted">
                                             {{ article.created_at|date:"M d, Y H:i" }}
                                             {% if article.edited %}
@@ -255,7 +272,6 @@
                                     </div>
                                 </div>
                                 {% if article.author == user %}
-                                    <!-- additional links -->
                                     <div class="d-flex align-items-center ms-lg-auto user-dropdown">
                                         <div class="dropdown">
                                             <a href="#" class="d-flex align-items-center gap-2 text-decoration-none"
@@ -264,8 +280,7 @@
                                             </a>
                                             <ul class="dropdown-menu dropdown-menu-end shadow-sm">
                                                 <li>
-                                                    <a class="dropdown-item"
-                                                       href="{% url 'edit_profile' user.pk %}">
+                                                    <a class="dropdown-item" href="{% url 'article_edit' article.pk %}">
                                                         Edit article
                                                     </a>
                                                 </li>
@@ -280,19 +295,16 @@
                                     </div>
                                 {% endif %}
                             </div>
-
-                            <hr class="my-0">
+                            <hr>
 
                             <!-- Body -->
                             <div class="card-body">
                                 <h5 class="fw-bold mb-2">
                                     {{ article.title }}
                                 </h5>
-
-                                <p class="text-muted mb-3">
+                                <p class="article-excerpt text-muted mb-2">
                                     {{ article.content|safe|truncatewords:45 }}
                                 </p>
-
                                 {% if article.image %}
                                     <img src="{{ article.image.url }}"
                                          class="article-image mb-3"
@@ -311,70 +323,77 @@
                                         <i class="bi bi-heart me-1"></i>320
                                     </span>
                                     <span>
-                                        <i class="bi bi-chat-dots me-3"></i>40
+                                        <i class="bi bi-chat-dots me-1"></i>40
                                     </span>
                                 </div>
                                 <a href="{% url 'article_detail' article.pk %}"
-                                   class="text-decoration-none fw-semibold">
+                                   class="text-decoration-none read-more-link">
                                     Read more →
                                 </a>
                             </div>
+
                         </div>
                     {% endfor %}
-                    <!--paginated-->
-                    <nav aria-label="Page navigation" class="mt-4">
-                        <ul class="pagination justify-content-center flex-wrap gap-1">
+                    {% if is_paginated %}
+                        <nav class="mt-5">
+                            <ul class="pagination justify-content-center align-items-center gap-1">
 
-                            <!-- Previous -->
-                            {% if is_paginated %}
-                                <nav class="mt-5">
-                                    <ul class="pagination justify-content-center align-items-center gap-1">
+                                <!-- Previous -->
+                                <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
+                                    {% if page_obj.has_previous %}
+                                        <a class="page-link rounded-pill px-3"
+                                           href="?page=
 
-                                        <!-- Previous -->
-                                        <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
-                                            <a class="page-link rounded-pill px-3"
-                                               href="{% if page_obj.has_previous %}?page=
-                                                   {{ page_obj.previous_page_number }}{% else %}#{% endif %}">
-                                                <i class="bi bi-chevron-left"></i>
-                                            </a>
-                                        </li>
+                                                   {{ page_obj.previous_page_number }}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
+                                            <i class="bi bi-chevron-left"></i>
+                                        </a>
+                                    {% else %}
+                                        <span class="page-link rounded-pill px-3">
+                                            <i class="bi bi-chevron-left"></i>
+                                        </span>
+                                    {% endif %}
+                                </li>
 
-                                        <!-- Page Numbers (windowed) -->
-                                        {% for num in paginator.page_range %}
-                                            {% if num >= page_obj.number|add:'-2' and num <= page_obj.number|add:'2' %}
-                                                {% if page_obj.number == num %}
-                                                    <li class="page-item active">
-                                                    <span class="page-link rounded-pill px-3">
-                                                        {{ num }}
-                                                    </span>
-                                                    </li>
-                                                {% else %}
-                                                    <li class="page-item">
-                                                        <a class="page-link rounded-pill px-3"
-                                                           href="?page={{ num }}">
-                                                            {{ num }}
-                                                        </a>
-                                                    </li>
-                                                {% endif %}
-                                            {% endif %}
-                                        {% endfor %}
+                                <!-- Page Numbers -->
+                                {% for num in paginator.page_range %}
+                                    {% if num >= page_obj.number|add:'-2' and num <= page_obj.number|add:'2' %}
+                                        {% if page_obj.number == num %}
+                                            <li class="page-item active">
+                                                <span class="page-link rounded-pill px-3">{{ num }}</span>
+                                            </li>
+                                        {% else %}
+                                            <li class="page-item">
+                                                <a class="page-link rounded-pill px-3"
+                                                   href="?page=
 
-                                        <!-- Next -->
-                                        <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
-                                            <a class="page-link rounded-pill px-3"
-                                               href="{% if page_obj.has_next %}?page=
-                                                   {{ page_obj.next_page_number }}{% else %}#{% endif %}">
-                                                <i class="bi bi-chevron-right"></i>
-                                            </a>
-                                        </li>
+                                                           {{ num }}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
+                                                    {{ num }}
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
 
-                                    </ul>
-                                </nav>
-                            {% endif %}
+                                <!-- Next -->
+                                <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
+                                    {% if page_obj.has_next %}
+                                        <a class="page-link rounded-pill px-3"
+                                           href="?page=
 
+                                                   {{ page_obj.next_page_number }}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
+                                            <i class="bi bi-chevron-right"></i>
+                                        </a>
+                                    {% else %}
+                                        <span class="page-link rounded-pill px-3">
+                                            <i class="bi bi-chevron-right"></i>
+                                        </span>
+                                    {% endif %}
+                                </li>
+                            </ul>
+                        </nav>
+                    {% endif %}
                 </div>
             </main>
-
 
             <!-- RIGHT SIDEBAR -->
             <aside class="col-lg-4 d-none d-lg-block">
