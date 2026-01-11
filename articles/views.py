@@ -1,7 +1,9 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
-from django.shortcuts import get_object_or_404
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView, DeleteView, UpdateView
 
@@ -9,7 +11,29 @@ from .forms import ArticleForm
 from .models import Article
 
 from django.contrib.auth import get_user_model
+
 User = get_user_model()
+
+
+@login_required
+def toggle_like_ajax(request):
+    if request.method == "POST":
+        article_id = request.POST.get("article_id")
+        article = get_object_or_404(Article, id=article_id)
+
+        if request.user in article.likes.all():
+            article.likes.remove(request.user)
+            liked = False
+        else:
+            article.likes.add(request.user)
+            liked = True
+
+        return JsonResponse({
+            "liked": liked,
+            "total_likes": article.likes.count(),
+        })
+
+    return JsonResponse({"error": "Invalid request"}, status=400)
 
 
 class CreateArticle(LoginRequiredMixin, CreateView):

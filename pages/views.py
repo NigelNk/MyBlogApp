@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Exists, OuterRef
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, UpdateView
 
@@ -24,20 +25,33 @@ class HomePageView(ListView):
         return queryset
 
 
+from django.db.models import Exists, OuterRef
+
+
 class DashboardView(LoginRequiredMixin, ListView):
     model = Article
     context_object_name = 'articles'
     template_name = 'pages/dashboard.html'
     login_url = reverse_lazy('login')
-
     paginate_by = 3
 
     def get_queryset(self):
         queryset = super().get_queryset().order_by('-created_at')
-        category = self.request.GET.get('category')
 
+        category = self.request.GET.get('category')
         if category and category != 'all':
             queryset = queryset.filter(category=category)
+
+        user = self.request.user
+
+        queryset = queryset.annotate(
+            is_liked=Exists(
+                Article.likes.through.objects.filter(
+                    article_id=OuterRef('pk'),
+                    useraccount_id=user.id
+                )
+            )
+        )
 
         return queryset
 
