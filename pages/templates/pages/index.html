@@ -224,7 +224,6 @@
                         </select>
                     </form>
 
-
                     {% for article in articles %}
                         <!-- Cards -->
                         <div class="card shadow-sm mb-4 article-card">
@@ -342,9 +341,7 @@
                                 <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
                                     {% if page_obj.has_previous %}
                                         <a class="page-link rounded-pill px-3"
-                                           href="?page=
-
-                                                   {{ page_obj.previous_page_number }}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
+                                           href="?page={{ page_obj.previous_page_number }}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
                                             <i class="bi bi-chevron-left"></i>
                                         </a>
                                     {% else %}
@@ -364,9 +361,7 @@
                                         {% else %}
                                             <li class="page-item">
                                                 <a class="page-link rounded-pill px-3"
-                                                   href="?page=
-
-                                                           {{ num }}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
+                                                   href="?page={{ num }}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
                                                     {{ num }}
                                                 </a>
                                             </li>
@@ -378,9 +373,7 @@
                                 <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
                                     {% if page_obj.has_next %}
                                         <a class="page-link rounded-pill px-3"
-                                           href="?page=
-
-                                                   {{ page_obj.next_page_number }}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
+                                           href="?page={{ page_obj.next_page_number }}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
                                             <i class="bi bi-chevron-right"></i>
                                         </a>
                                     {% else %}
