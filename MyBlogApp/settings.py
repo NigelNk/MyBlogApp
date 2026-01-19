@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'articles',
     'ckeditor',
     'ckeditor_uploader',
+    'django.contrib.postgres',
 
     'django.contrib.admin',
     'django.contrib.auth',

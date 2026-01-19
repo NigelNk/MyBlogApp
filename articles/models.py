@@ -28,12 +28,22 @@ class Article(models.Model):
         blank=True,
     )
 
+    viewers = models.ManyToManyField(
+        get_user_model(),
+        related_name='viewed_articles',
+        blank=True,
+    )
+
     def __str__(self):
         return self.title
 
     @property
     def is_edited(self):
         return self.updated_at > self.created_at
+
+    @property
+    def total_views(self):
+        return self.viewers.count()
 
     @property
     def total_likes(self):

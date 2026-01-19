@@ -1,0 +1,22 @@
+# ===== IDE =====
+.idea/
+
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*.pyo
+
+# ===== Django =====
+db.sqlite3
+static/ckeditor/
+
+# ===== Media files =====
+article_images/
+profile_pics/
+
+# ===== Migrations cache (NOT migrations themselves) =====
+*/migrations/__pycache__/
+
+# ===== OS =====
+.DS_Store
+Thumbs.db

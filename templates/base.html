@@ -34,5 +34,44 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js"
         integrity="sha384-G/EV+4j2dNv+tEPo3++6LCgdCROaejBqfUeNjuKAiuXbjrxilcCdDz6ZAVfHWe1Y"
         crossorigin="anonymous"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
+
+        document.body.addEventListener("click", function (e) {
+            const button = e.target.closest(".like-btn");
+            if (!button) return;
+
+            const articleId = button.dataset.articleId;
+            const icon = button.querySelector("i");
+            const countSpan = button.querySelector(".like-count");
+
+            fetch("{% url 'toggle_like_ajax' %}", {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": csrftoken,
+                    "X-Requested-With": "XMLHttpRequest",
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: `article_id=${articleId}`
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.liked) {
+                        icon.classList.replace("bi-heart", "bi-heart-fill");
+                        icon.classList.add("text-danger");
+                    } else {
+                        icon.classList.replace("bi-heart-fill", "bi-heart");
+                        icon.classList.remove("text-danger");
+                    }
+                    countSpan.textContent = data.total_likes;
+                });
+        });
+
+    });
+</script>
+
 </body>
 </html>

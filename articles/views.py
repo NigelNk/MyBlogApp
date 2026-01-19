@@ -67,6 +67,14 @@ class ArticleDetail(LoginRequiredMixin, DetailView):
     context_object_name = 'article'
     login_url = reverse_lazy('login')
 
+    def get_object(self, queryset=None):
+        article = super().get_object(queryset)
+
+        if self.request.user not in article.viewers.all():
+            article.viewers.add(self.request.user)
+
+        return article
+
 
 class ArticleDeleteView(LoginRequiredMixin, DeleteView):
     model = Article
