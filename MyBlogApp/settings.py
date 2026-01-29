@@ -21,15 +21,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-teb@p1j=+n0wsgz2*bnj6g(9wsu8dtqfp^k=bc+hh!dxv%x_8z'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = [
-    "127.0.0.1",
-    "localhost",
-    'progestational-luka-nonconstricted.ngrok-free.dev',
-    ".ngrok.io",
-]
+ALLOWED_HOSTS = ["*"]  # fine for MVP
+
 CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1:8000",
     "http://localhost:8000",
